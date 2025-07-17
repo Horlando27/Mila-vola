@@ -1573,9 +1573,416 @@
                                 createdAt: serverTimestamp()
                             });
                             
-                            // Créditer le parrain
+                              // Créditer le parrain
                             await updateDoc(doc(db, "users", referrerId), {
                                 balance: increment(50) // Bonus initial
                             });
                         }
                     }
+                    
+                    showNotification("Voaray soa aminao eo amin'ny Mila Vola!", true);
+                } catch (error) {
+                    showNotification(error.message, false);
+                }
+            }
+        }
+        
+        async function loginUser(userData) {
+            appState.currentUser = userData;
+            document.getElementById('authContainer').style.display = 'none';
+            document.getElementById('systemContainer').style.display = 'flex';
+            
+            // Mettre à jour l'interface utilisateur
+            document.getElementById('username').textContent = userData.name;
+            document.getElementById('userId').textContent = `ID: ${userData.id}`;
+            document.getElementById('userType').textContent = `Type: ${userData.type === 'jobseeker' ? 'Mitady asa' : 'Mpamorona publication'}`;
+            document.getElementById('userBalance').textContent = userData.balance;
+            document.getElementById('depositBalance').textContent = userData.depositBalance;
+            document.getElementById('referralLink').textContent = `${window.location.origin}?ref=${userData.referralCode}`;
+            
+            // Mettre à jour l'avatar
+            document.getElementById('userAvatar').textContent = userData.name.charAt(0);
+            
+            // Afficher l'interface appropriée
+            if (userData.type === 'publisher') {
+                document.getElementById('userInterface').style.display = 'none';
+                document.getElementById('publisherInterface').style.display = 'flex';
+                document.getElementById('adminInterface').style.display = 'none';
+                document.getElementById('switchBtn').style.display = 'none';
+                
+                // Vérifier le solde de dépôt
+                document.getElementById('publishBtn').disabled = userData.depositBalance < 5000;
+            } else {
+                document.getElementById('userInterface').style.display = 'flex';
+                document.getElementById('publisherInterface').style.display = 'none';
+                document.getElementById('adminInterface').style.display = 'none';
+                document.getElementById('switchBtn').style.display = 'flex';
+            }
+            
+            // Charger les filleuls
+            loadReferrals();
+        }
+        
+        async function logout() {
+            try {
+                await signOut(auth);
+                appState.currentUser = null;
+                document.getElementById('systemContainer').style.display = 'none';
+                document.getElementById('authContainer').style.display = 'block';
+                showLogin();
+            } catch (error) {
+                showNotification("Tsy afaka nivoaka: " + error.message, false);
+            }
+        }
+        
+        function showLogin() {
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('fullName').value = '';
+            document.getElementById('referralCode').value = '';
+            document.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
+        }
+        
+        async function loadCompletedTasks() {
+            const tasksSnapshot = await getDocs(query(tasksRef, where("userId", "==", appState.currentUser.id)));
+            appState.completedTasks = tasksSnapshot.docs.map(doc => doc.data().taskId);
+            renderTasks();
+        }
+        
+        async function renderTasks() {
+            const tasksContainer = document.getElementById('tasksContainer');
+            tasksContainer.innerHTML = '';
+            
+            const tasksSnapshot = await getDocs(tasksRef);
+            
+            if (tasksSnapshot.empty) {
+                tasksContainer.innerHTML = `
+                    <div class="no-tasks">
+                        <div class="no-tasks-icon"><i class="fas fa-inbox"></i></div>
+                        <h3>Tsy misy asa</h3>
+                        <p>Tsy misy asa mbola misy amin'izao fotoana izao</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            tasksSnapshot.forEach(taskDoc => {
+                const task = taskDoc.data();
+                const isCompleted = appState.completedTasks.includes(task.id);
+                
+                const taskElement = document.createElement('div');
+                taskElement.className = `task-card ${isCompleted ? 'completed-task' : ''}`;
+                taskElement.innerHTML = `
+                    <div class="task-header">
+                        <div class="task-title">${task.title}</div>
+                        <div class="reward-badge">+${task.reward} AR</div>
+                    </div>
+                    <div class="task-description">
+                        ${task.description}
+                    </div>
+                    <a href="${task.link}" class="task-complete-btn" target="_blank">
+                        <i class="${task.icon}"></i> Iditra amin'ilay asa
+                    </a>
+                    
+                    ${isCompleted ? '' : `
+                    <button class="task-complete-btn" data-taskid="${task.id}">
+                        <i class="fas fa-check-circle"></i> Vita ny asa
+                    </button>
+                    
+                    <div class="whatsapp-form" id="whatsappForm${task.id}" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label">Laharana finday WhatsApp:</label>
+                            <input type="text" class="form-input" id="phone${task.id}" placeholder="+261XXXXXXXXX">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Anarana feno:</label>
+                            <input type="text" class="form-input" id="name${task.id}" placeholder="Anaranao">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${task.proofLabel}:</label>
+                            <input type="text" class="form-input" id="proof${task.id}" placeholder="${task.proofPlaceholder}">
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button class="whatsapp-btn" data-taskid="${task.id}">
+                                <i class="fab fa-whatsapp whatsapp-icon"></i> Alefaso amin'ny admin
+                            </button>
+                        </div>
+                        
+                        <div class="proof-status proof-pending" id="proofStatus${task.id}" style="display: none;">
+                            <i class="fas fa-clock"></i> Miandry vérification amin'ny admin
+                        </div>
+                    </div>
+                    `}
+                `;
+                
+                tasksContainer.appendChild(taskElement);
+                
+                // Ajouter les événements pour les boutons
+                if (!isCompleted) {
+                    const completeBtn = taskElement.querySelector(`button[data-taskid="${task.id}"]`);
+                    completeBtn.addEventListener('click', () => showWhatsappForm(`whatsappForm${task.id}`));
+                    
+                    const whatsappBtn = taskElement.querySelector(`.whatsapp-btn[data-taskid="${task.id}"]`);
+                    whatsappBtn.addEventListener('click', () => submitProof(task.id));
+                }
+            });
+        }
+        
+        function showWhatsappForm(formId) {
+            const form = document.getElementById(formId);
+            form.style.display = 'block';
+        }
+        
+        async function submitProof(taskId) {
+            const phone = document.getElementById(`phone${taskId}`).value;
+            const name = document.getElementById(`name${taskId}`).value;
+            const proof = document.getElementById(`proof${taskId}`).value;
+            const status = document.getElementById(`proofStatus${taskId}`);
+            
+            if (!phone || !name || !proof) {
+                showNotification("Ampidiro ny angona rehetra!", false);
+                return;
+            }
+            
+            // Ajouter la preuve à la liste d'admin
+            const taskDoc = await getDoc(doc(db, "tasks", taskId));
+            const task = taskDoc.data();
+            
+            const newProof = {
+                id: `proof_${Date.now()}`,
+                taskId: taskId,
+                taskTitle: task.title,
+                userName: name,
+                userPhone: phone,
+                userProof: proof,
+                userId: appState.currentUser.id,
+                date: new Date().toISOString(),
+                status: "pending"
+            };
+            
+            await addDoc(pendingTasksRef, newProof);
+            
+            // Marquer la tâche comme complétée localement
+            appState.completedTasks.push(taskId);
+            
+            // Mettre à jour l'affichage
+            status.style.display = 'block';
+            document.querySelector(`#whatsappForm${taskId} .whatsapp-btn`).disabled = true;
+            document.querySelector(`.task-card[data-taskid="${taskId}"]`).classList.add('completed-task');
+            
+            showNotification("Nalefany tany amin'ny admin ilay porofo. Miandry vérification!", true);
+        }
+        
+        async function adminLogin() {
+            const password = document.getElementById('adminPassword').value;
+            
+            if (password === appState.adminPassword) {
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminList').style.display = 'block';
+                loadAdminTasks();
+            } else {
+                showNotification("Teny miafina diso!", false);
+            }
+        }
+        
+        async function loadAdminTasks() {
+            const adminList = document.getElementById('adminList');
+            adminList.innerHTML = '';
+            
+            const pendingTasksSnapshot = await getDocs(pendingTasksRef);
+            const pendingDepositsSnapshot = await getDocs(pendingDepositsRef);
+            
+            if (pendingTasksSnapshot.empty && pendingDepositsSnapshot.empty) {
+                adminList.innerHTML = `
+                    <div class="no-tasks">
+                        <div class="no-tasks-icon"><i class="fas fa-inbox"></i></div>
+                        <h3>Tsy misy fangatahana</h3>
+                        <p>Tsy misy fangatahana mbola miandry vérification</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Afficher les preuves de tâches
+            pendingTasksSnapshot.forEach(proofDoc => {
+                const proof = proofDoc.data();
+                const proofElement = document.createElement('div');
+                proofElement.className = 'admin-item';
+                proofElement.innerHTML = `
+                    <div class="admin-info">
+                        <div class="admin-task-title">${proof.taskTitle}</div>
+                        <div class="admin-user-info">${proof.userName}</div>
+                        <div class="admin-user-info">${proof.userPhone}</div>
+                        <div class="admin-user-info">Porofo: ${proof.userProof}</div>
+                        <div class="admin-date">${new Date(proof.date).toLocaleString()}</div>
+                    </div>
+                    <div class="admin-actions">
+                        <button class="admin-confirm-btn" data-proofid="${proofDoc.id}" data-taskid="${proof.taskId}" data-userid="${proof.userId}">
+                            <i class="fas fa-check"></i> Confirmer
+                        </button>
+                        <button class="admin-reject-btn" data-proofid="${proofDoc.id}">
+                            <i class="fas fa-times"></i> Annuler
+                        </button>
+                    </div>
+                `;
+                adminList.appendChild(proofElement);
+                
+                // Ajouter les événements
+                const confirmBtn = proofElement.querySelector('.admin-confirm-btn');
+                confirmBtn.addEventListener('click', async (e) => {
+                    const proofId = e.target.dataset.proofid;
+                    const taskId = e.target.dataset.taskid;
+                    const userId = e.target.dataset.userid;
+                    await confirmTask(proofId, taskId, userId);
+                });
+                
+                const rejectBtn = proofElement.querySelector('.admin-reject-btn');
+                rejectBtn.addEventListener('click', async (e) => {
+                    const proofId = e.target.dataset.proofid;
+                    await rejectTask(proofId);
+                });
+            });
+            
+            // Afficher les dépôts
+            pendingDepositsSnapshot.forEach(depositDoc => {
+                const deposit = depositDoc.data();
+                const depositElement = document.createElement('div');
+                depositElement.className = 'admin-item';
+                depositElement.innerHTML = `
+                    <div class="admin-info">
+                        <div class="admin-task-title">Fampidirana vola</div>
+                        <div class="admin-user-info">${deposit.userName}</div>
+                        <div class="admin-user-info">${deposit.userPhone}</div>
+                        <div class="admin-user-info">Volafotsy: ${deposit.amount} AR</div>
+                        <div class="admin-date">${new Date(deposit.date).toLocaleString()}</div>
+                    </div>
+                    <div class="admin-actions">
+                        <button class="admin-confirm-btn" data-depositid="${depositDoc.id}" data-userid="${deposit.userId}" data-amount="${deposit.amount}">
+                            <i class="fas fa-check"></i> Confirmer
+                        </button>
+                        <button class="admin-reject-btn" data-depositid="${depositDoc.id}">
+                            <i class="fas fa-times"></i> Annuler
+                        </button>
+                    </div>
+                `;
+                adminList.appendChild(depositElement);
+                
+                // Ajouter les événements
+                const confirmBtn = depositElement.querySelector('.admin-confirm-btn');
+                confirmBtn.addEventListener('click', async (e) => {
+                    const depositId = e.target.dataset.depositid;
+                    const userId = e.target.dataset.userid;
+                    const amount = e.target.dataset.amount;
+                    await confirmDeposit(depositId, userId, amount);
+                });
+                
+                const rejectBtn = depositElement.querySelector('.admin-reject-btn');
+                rejectBtn.addEventListener('click', async (e) => {
+                    const depositId = e.target.dataset.depositid;
+                    await rejectDeposit(depositId);
+                });
+            });
+        }
+        
+        async function confirmTask(proofId, taskId, userId) {
+            try {
+                // Supprimer la preuve
+                await deleteDoc(doc(db, "pendingTasks", proofId));
+                
+                // Créditer l'utilisateur
+                const taskDoc = await getDoc(doc(db, "tasks", taskId));
+                const task = taskDoc.data();
+                
+                await updateDoc(doc(db, "users", userId), {
+                    balance: increment(task.reward)
+                });
+                
+                // Créditer le parrain (5%)
+                const userDoc = await getDoc(doc(db, "users", userId));
+                const user = userDoc.data();
+                
+                if (user.referredBy) {
+                    const referrerQuery = query(usersRef, where("referralCode", "==", user.referredBy));
+                    const referrerSnapshot = await getDocs(referrerQuery);
+                    
+                    if (!referrerSnapshot.empty) {
+                        const referrerDoc = referrerSnapshot.docs[0];
+                        const referrerId = referrerDoc.id;
+                        const referralAmount = Math.round(task.reward * 0.05);
+                        
+                        await updateDoc(doc(db, "users", referrerId), {
+                            balance: increment(referralAmount)
+                        });
+                        
+                        // Enregistrer la commission
+                        await addDoc(referralsRef, {
+                            referrerId: referrerId,
+                            referredId: userId,
+                            amount: referralAmount,
+                            taskId: taskId,
+                            createdAt: serverTimestamp()
+                        });
+                    }
+                }
+                
+                // Recharger les tâches admin
+                await loadAdminTasks();
+                
+                showNotification("Niampy " + task.reward + " AR ny solde-nao nandritra ny vérification!", true);
+            } catch (error) {
+                showNotification("Nisy olana: " + error.message, false);
+            }
+        }
+        
+        async function rejectTask(proofId) {
+            try {
+                await deleteDoc(doc(db, "pendingTasks", proofId));
+                await loadAdminTasks();
+                showNotification("Nafoy ilay porofo", true);
+            } catch (error) {
+                showNotification("Nisy olana: " + error.message, false);
+            }
+        }
+        
+        async function processRetrait() {
+            const phone = document.getElementById('retraitPhone').value;
+            const name = document.getElementById('retraitName').value;
+            const amount = parseInt(document.getElementById('retraitAmount').value);
+            
+            if (!phone || !name || !amount) {
+                showNotification("Ampidiro ny angona rehetra!", false);
+                return;
+            }
+            
+            if (amount < 1000) {
+                showNotification("Minimum 1000 AR ny retrait!", false);
+                return;
+            }
+            
+            if (amount > appState.currentUser.balance) {
+                showNotification("Tsy ampy ny vola ao amin'ny kaontinao!", false);
+                return;
+            }
+            
+            try {
+                // Soustraire le montant du solde
+                await updateDoc(doc(db, "users", appState.currentUser.id), {
+                    balance: increment(-amount)
+                });
+                
+                // Fermer le modal
+                document.getElementById('retraitModal').style.display = 'none';
+                
+                // Afficher la notification
+                showNotification(`Tontosa ny fangatahana retrait ${amount} AR! Ho antsoina amin'ny ${phone} ianao.`, true);
+                
+                // Réinitialiser le formulaire
+                document.getElementById('retraitPhone').value = '';
+                document.getElementById('retraitName').value = '';
+                document.getElementById('retraitAmount').value = '';
+                
+                // Mettre à jour l'affichage
+                appState.currentUser.depositBalance -= 5000;
+                document.getElementById('depositBalance').textContent = appState.currentUser.depositBalance;
+                document.getElementById('publishBtn').disabled = appState.currentUser.deposit
