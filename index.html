@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="mg">
 <head>
@@ -34,12 +35,16 @@
             min-height: 100vh;
             padding: 20px;
             color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
         /* Login/Signup Styles */
         .auth-container {
             max-width: 500px;
-            margin: 50px auto;
+            width: 100%;
+            margin: 20px;
             background: white;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -95,6 +100,7 @@
         }
         
         .form-input {
+            width: 100%;
             padding: 15px;
             border: 2px solid #ddd;
             border-radius: 10px;
@@ -161,6 +167,7 @@
         
         .system-container {
             max-width: 1200px;
+            width: 100%;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
@@ -740,12 +747,12 @@
             display: none;
         }
         
-        .publisher-interface .section-title {
+         .publisher-interface .section-title {
             color: var(--publisher);
             border-bottom: 3px solid var(--publisher);
         }
         
-       .publisher-form {
+        .publisher-form {
             background: white;
             border-radius: 15px;
             padding: 25px;
@@ -1147,7 +1154,91 @@
                 <h2 class="section-title"><i class="fas fa-tasks"></i> Asa Misy</h2>
                 
                 <div class="tasks-container" id="tasksContainer">
-                    <!-- Les tâches seront chargées dynamiquement -->
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Manao "J'aime" Facebook</div>
+                            <div class="reward-badge">+50 AR</div>
+                        </div>
+                        <div class="task-description">
+                            Tsindrio ny lien eto ambany, dia manao "J'aime" ilay publication.
+                            Rehefa vita ilay asa, tsindrio ny bokitra "Vita ny asa".
+                        </div>
+                        <a href="https://facebook.com" class="task-complete-btn" target="_blank">
+                            <i class="fab fa-facebook"></i> Iditra amin'ilay asa
+                        </a>
+                        
+                        <button class="task-complete-btn" id="completeTask1">
+                            <i class="fas fa-check-circle"></i> Vita ny asa
+                        </button>
+                        
+                        <div class="whatsapp-form" id="whatsappForm1">
+                            <div class="form-group">
+                                <label class="form-label">Laharana finday WhatsApp:</label>
+                                <input type="text" class="form-input" id="phone1" placeholder="+261XXXXXXXXX">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Anarana feno:</label>
+                                <input type="text" class="form-input" id="name1" placeholder="Anaranao">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Lien ilay publication:</label>
+                                <input type="text" class="form-input" id="link1" placeholder="https://facebook.com/...">
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button class="whatsapp-btn" id="sendProof1">
+                                    <i class="fab fa-whatsapp whatsapp-icon"></i> Alefaso amin'ny admin
+                                </button>
+                            </div>
+                            
+                            <div class="proof-status proof-pending" id="proofStatus1" style="display: none;">
+                                <i class="fas fa-clock"></i> Miandry vérification amin'ny admin
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="task-card">
+                        <div class="task-header">
+                            <div class="task-title">Manaraka Instagram</div>
+                            <div class="reward-badge">+50 AR</div>
+                        </div>
+                        <div class="task-description">
+                            Tsindrio ny lien eto ambany, dia manaraka ilay compte Instagram.
+                            Rehefa vita ilay asa, tsindrio ny bokitra "Vita ny asa".
+                        </div>
+                        <a href="https://instagram.com" class="task-complete-btn" target="_blank">
+                            <i class="fab fa-instagram"></i> Iditra amin'ilay asa
+                        </a>
+                        
+                        <button class="task-complete-btn" id="completeTask2">
+                            <i class="fas fa-check-circle"></i> Vita ny asa
+                        </button>
+                        
+                        <div class="whatsapp-form" id="whatsappForm2">
+                            <div class="form-group">
+                                <label class="form-label">Laharana finday WhatsApp:</label>
+                                <input type="text" class="form-input" id="phone2" placeholder="+261XXXXXXXXX">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Anarana feno:</label>
+                                <input type="text" class="form-input" id="name2" placeholder="Anaranao">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Anarana ao amin'ny Instagram:</label>
+                                <input type="text" class="form-input" id="instagramName" placeholder="@anaranao">
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button class="whatsapp-btn" id="sendProof2">
+                                    <i class="fab fa-whatsapp whatsapp-icon"></i> Alefaso amin'ny admin
+                                </button>
+                            </div>
+                            
+                            <div class="proof-status proof-pending" id="proofStatus2" style="display: none;">
+                                <i class="fas fa-clock"></i> Miandry vérification amin'ny admin
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -1304,11 +1395,13 @@
         <footer>
             Système Mila Vola &copy; 2025 | Tous droits réservés
         </footer>
-                        </div>
+    </div>
 
-      <!-- Firebase + App JS -->
+
+    <!-- Firebase + App JS -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { 
             getAuth, 
             createUserWithEmailAndPassword, 
@@ -1316,8 +1409,7 @@
             onAuthStateChanged, 
             updateProfile,
             signOut
-        } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
-        
+        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
         import { 
             getFirestore, 
             doc, 
@@ -1329,11 +1421,9 @@
             deleteDoc, 
             serverTimestamp, 
             query, 
-            orderBy, 
-            onSnapshot, 
-            getDocs,
-            where
-        } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+            where,
+            increment
+        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
         
         // Configuration Firebase
         const firebaseConfig = {
@@ -1346,6 +1436,7 @@
             measurementId: "G-MRVHVWPV71"
         };
         
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
@@ -1365,10 +1456,15 @@
             pendingDeposits: [],
             publications: [],
             currentInterface: 'user',
-            completedTasks: []
+            completedTasks: [],
+            adminPassword: "Rakoto12//"
         };
         
         // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            init();
+        });
+        
         function init() {
             // Configurer les événements
             setupAuthEvents();
@@ -1381,10 +1477,9 @@
                     const userDoc = await getDoc(doc(db, "users", user.uid));
                     if (userDoc.exists()) {
                         loginUser(userDoc.data());
-                        loadCompletedTasks();
-                        loadPublications();
                     } else {
                         showNotification("Tsy misy ny kaonty!", false);
+                        signOut(auth);
                     }
                 } else {
                     // Afficher le formulaire de connexion
@@ -1445,7 +1540,13 @@
         }
         
         function setupAppEvents() {
-            // Boutons "Vita ny asa" (seront gérés dynamiquement)
+            // Boutons "Vita ny asa"
+            document.getElementById('completeTask1').addEventListener('click', () => showWhatsappForm('whatsappForm1'));
+            document.getElementById('completeTask2').addEventListener('click', () => showWhatsappForm('whatsappForm2'));
+            
+            // Boutons WhatsApp
+            document.getElementById('sendProof1').addEventListener('click', () => submitProof('task1'));
+            document.getElementById('sendProof2').addEventListener('click', () => submitProof('task2'));
             
             // Boutons de retrait
             document.getElementById('retraitBtn').addEventListener('click', () => {
@@ -1507,16 +1608,13 @@
                 return;
             }
             
-            if (isLogin) {
-                // Connexion avec Firebase Auth
-                try {
-                    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                } catch (error) {
-                    showNotification("Diso ny mailaka na ny teny miafina!", false);
-                }
-            } else {
-                // Inscription avec Firebase Auth
-                try {
+            try {
+                if (isLogin) {
+                    // Connexion avec Firebase Auth
+                    await signInWithEmailAndPassword(auth, email, password);
+                    showNotification("Tafiditra soa aminao!", true);
+                } else {
+                    // Inscription avec Firebase Auth
                     const fullName = document.getElementById('fullName').value;
                     const selectedType = document.querySelector('.radio-option.selected');
                     const referralCode = document.getElementById('referralCode').value;
@@ -1535,6 +1633,9 @@
                     
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                     const user = userCredential.user;
+                    
+                    // Mettre à jour le profil avec le nom
+                    await updateProfile(user, { displayName: fullName });
                     
                     // Générer un code de parrainage
                     const newReferralCode = generateReferralCode();
@@ -1555,9 +1656,6 @@
                     // Enregistrer dans Firestore
                     await setDoc(doc(db, "users", user.uid), newUser);
                     
-                    // Mettre à jour le profil Firebase (nom)
-                    await updateProfile(user, { displayName: fullName });
-                    
                     // Si l'utilisateur a un parrain, enregistrer le filleul
                     if (referralCode) {
                         const referrerQuery = query(usersRef, where("referralCode", "==", referralCode));
@@ -1573,7 +1671,7 @@
                                 createdAt: serverTimestamp()
                             });
                             
-                              // Créditer le parrain
+                            // Créditer le parrain
                             await updateDoc(doc(db, "users", referrerId), {
                                 balance: increment(50) // Bonus initial
                             });
@@ -1581,9 +1679,10 @@
                     }
                     
                     showNotification("Voaray soa aminao eo amin'ny Mila Vola!", true);
-                } catch (error) {
-                    showNotification(error.message, false);
                 }
+            } catch (error) {
+                showNotification("Nisy olana: " + error.message, false);
+                console.error(error);
             }
         }
         
@@ -1618,9 +1717,6 @@
                 document.getElementById('adminInterface').style.display = 'none';
                 document.getElementById('switchBtn').style.display = 'flex';
             }
-            
-            // Charger les filleuls
-            loadReferrals();
         }
         
         async function logout() {
@@ -1643,135 +1739,57 @@
             document.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
         }
         
-        async function loadCompletedTasks() {
-            const tasksSnapshot = await getDocs(query(tasksRef, where("userId", "==", appState.currentUser.id)));
-            appState.completedTasks = tasksSnapshot.docs.map(doc => doc.data().taskId);
-            renderTasks();
-        }
-        
-        async function renderTasks() {
-            const tasksContainer = document.getElementById('tasksContainer');
-            tasksContainer.innerHTML = '';
-            
-            const tasksSnapshot = await getDocs(tasksRef);
-            
-            if (tasksSnapshot.empty) {
-                tasksContainer.innerHTML = `
-                    <div class="no-tasks">
-                        <div class="no-tasks-icon"><i class="fas fa-inbox"></i></div>
-                        <h3>Tsy misy asa</h3>
-                        <p>Tsy misy asa mbola misy amin'izao fotoana izao</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            tasksSnapshot.forEach(taskDoc => {
-                const task = taskDoc.data();
-                const isCompleted = appState.completedTasks.includes(task.id);
-                
-                const taskElement = document.createElement('div');
-                taskElement.className = `task-card ${isCompleted ? 'completed-task' : ''}`;
-                taskElement.innerHTML = `
-                    <div class="task-header">
-                        <div class="task-title">${task.title}</div>
-                        <div class="reward-badge">+${task.reward} AR</div>
-                    </div>
-                    <div class="task-description">
-                        ${task.description}
-                    </div>
-                    <a href="${task.link}" class="task-complete-btn" target="_blank">
-                        <i class="${task.icon}"></i> Iditra amin'ilay asa
-                    </a>
-                    
-                    ${isCompleted ? '' : `
-                    <button class="task-complete-btn" data-taskid="${task.id}">
-                        <i class="fas fa-check-circle"></i> Vita ny asa
-                    </button>
-                    
-                    <div class="whatsapp-form" id="whatsappForm${task.id}" style="display: none;">
-                        <div class="form-group">
-                            <label class="form-label">Laharana finday WhatsApp:</label>
-                            <input type="text" class="form-input" id="phone${task.id}" placeholder="+261XXXXXXXXX">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Anarana feno:</label>
-                            <input type="text" class="form-input" id="name${task.id}" placeholder="Anaranao">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">${task.proofLabel}:</label>
-                            <input type="text" class="form-input" id="proof${task.id}" placeholder="${task.proofPlaceholder}">
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <button class="whatsapp-btn" data-taskid="${task.id}">
-                                <i class="fab fa-whatsapp whatsapp-icon"></i> Alefaso amin'ny admin
-                            </button>
-                        </div>
-                        
-                        <div class="proof-status proof-pending" id="proofStatus${task.id}" style="display: none;">
-                            <i class="fas fa-clock"></i> Miandry vérification amin'ny admin
-                        </div>
-                    </div>
-                    `}
-                `;
-                
-                tasksContainer.appendChild(taskElement);
-                
-                // Ajouter les événements pour les boutons
-                if (!isCompleted) {
-                    const completeBtn = taskElement.querySelector(`button[data-taskid="${task.id}"]`);
-                    completeBtn.addEventListener('click', () => showWhatsappForm(`whatsappForm${task.id}`));
-                    
-                    const whatsappBtn = taskElement.querySelector(`.whatsapp-btn[data-taskid="${task.id}"]`);
-                    whatsappBtn.addEventListener('click', () => submitProof(task.id));
-                }
-            });
-        }
-        
         function showWhatsappForm(formId) {
             const form = document.getElementById(formId);
             form.style.display = 'block';
         }
         
         async function submitProof(taskId) {
-            const phone = document.getElementById(`phone${taskId}`).value;
-            const name = document.getElementById(`name${taskId}`).value;
-            const proof = document.getElementById(`proof${taskId}`).value;
-            const status = document.getElementById(`proofStatus${taskId}`);
+            let phone, name, proof;
+            
+            if (taskId === 'task1') {
+                phone = document.getElementById('phone1').value;
+                name = document.getElementById('name1').value;
+                proof = document.getElementById('link1').value;
+            } else {
+                phone = document.getElementById('phone2').value;
+                name = document.getElementById('name2').value;
+                proof = document.getElementById('instagramName').value;
+            }
             
             if (!phone || !name || !proof) {
                 showNotification("Ampidiro ny angona rehetra!", false);
                 return;
             }
             
-            // Ajouter la preuve à la liste d'admin
-            const taskDoc = await getDoc(doc(db, "tasks", taskId));
-            const task = taskDoc.data();
-            
-            const newProof = {
-                id: `proof_${Date.now()}`,
-                taskId: taskId,
-                taskTitle: task.title,
-                userName: name,
-                userPhone: phone,
-                userProof: proof,
-                userId: appState.currentUser.id,
-                date: new Date().toISOString(),
-                status: "pending"
-            };
-            
-            await addDoc(pendingTasksRef, newProof);
-            
-            // Marquer la tâche comme complétée localement
-            appState.completedTasks.push(taskId);
-            
-            // Mettre à jour l'affichage
-            status.style.display = 'block';
-            document.querySelector(`#whatsappForm${taskId} .whatsapp-btn`).disabled = true;
-            document.querySelector(`.task-card[data-taskid="${taskId}"]`).classList.add('completed-task');
-            
-            showNotification("Nalefany tany amin'ny admin ilay porofo. Miandry vérification!", true);
+            try {
+                // Ajouter la preuve à la liste d'admin
+                const taskTitle = taskId === 'task1' ? "Manao 'J'aime' Facebook" : "Manaraka Instagram";
+                
+                const newProof = {
+                    taskId: taskId,
+                    taskTitle: taskTitle,
+                    userName: name,
+                    userPhone: phone,
+                    userProof: proof,
+                    userId: appState.currentUser.id,
+                    date: new Date().toISOString(),
+                    status: "pending"
+                };
+                
+                await addDoc(pendingTasksRef, newProof);
+                
+                // Mettre à jour le statut
+                const status = document.getElementById(`proofStatus${taskId}`);
+                status.style.display = 'block';
+                
+                // Désactiver le bouton
+                document.getElementById(`sendProof${taskId}`).disabled = true;
+                
+                showNotification("Nalefany tany amin'ny admin ilay porofo. Miandry vérification!", true);
+            } catch (error) {
+                showNotification("Nisy olana: " + error.message, false);
+            }
         }
         
         async function adminLogin() {
@@ -1791,9 +1809,8 @@
             adminList.innerHTML = '';
             
             const pendingTasksSnapshot = await getDocs(pendingTasksRef);
-            const pendingDepositsSnapshot = await getDocs(pendingDepositsRef);
             
-            if (pendingTasksSnapshot.empty && pendingDepositsSnapshot.empty) {
+            if (pendingTasksSnapshot.empty) {
                 adminList.innerHTML = `
                     <div class="no-tasks">
                         <div class="no-tasks-icon"><i class="fas fa-inbox"></i></div>
@@ -1843,46 +1860,6 @@
                     await rejectTask(proofId);
                 });
             });
-            
-            // Afficher les dépôts
-            pendingDepositsSnapshot.forEach(depositDoc => {
-                const deposit = depositDoc.data();
-                const depositElement = document.createElement('div');
-                depositElement.className = 'admin-item';
-                depositElement.innerHTML = `
-                    <div class="admin-info">
-                        <div class="admin-task-title">Fampidirana vola</div>
-                        <div class="admin-user-info">${deposit.userName}</div>
-                        <div class="admin-user-info">${deposit.userPhone}</div>
-                        <div class="admin-user-info">Volafotsy: ${deposit.amount} AR</div>
-                        <div class="admin-date">${new Date(deposit.date).toLocaleString()}</div>
-                    </div>
-                    <div class="admin-actions">
-                        <button class="admin-confirm-btn" data-depositid="${depositDoc.id}" data-userid="${deposit.userId}" data-amount="${deposit.amount}">
-                            <i class="fas fa-check"></i> Confirmer
-                        </button>
-                        <button class="admin-reject-btn" data-depositid="${depositDoc.id}">
-                            <i class="fas fa-times"></i> Annuler
-                        </button>
-                    </div>
-                `;
-                adminList.appendChild(depositElement);
-                
-                // Ajouter les événements
-                const confirmBtn = depositElement.querySelector('.admin-confirm-btn');
-                confirmBtn.addEventListener('click', async (e) => {
-                    const depositId = e.target.dataset.depositid;
-                    const userId = e.target.dataset.userid;
-                    const amount = e.target.dataset.amount;
-                    await confirmDeposit(depositId, userId, amount);
-                });
-                
-                const rejectBtn = depositElement.querySelector('.admin-reject-btn');
-                rejectBtn.addEventListener('click', async (e) => {
-                    const depositId = e.target.dataset.depositid;
-                    await rejectDeposit(depositId);
-                });
-            });
         }
         
         async function confirmTask(proofId, taskId, userId) {
@@ -1891,45 +1868,21 @@
                 await deleteDoc(doc(db, "pendingTasks", proofId));
                 
                 // Créditer l'utilisateur
-                const taskDoc = await getDoc(doc(db, "tasks", taskId));
-                const task = taskDoc.data();
-                
+                const reward = 50; // Récompense fixe pour chaque tâche
                 await updateDoc(doc(db, "users", userId), {
-                    balance: increment(task.reward)
+                    balance: increment(reward)
                 });
                 
-                // Créditer le parrain (5%)
-                const userDoc = await getDoc(doc(db, "users", userId));
-                const user = userDoc.data();
-                
-                if (user.referredBy) {
-                    const referrerQuery = query(usersRef, where("referralCode", "==", user.referredBy));
-                    const referrerSnapshot = await getDocs(referrerQuery);
-                    
-                    if (!referrerSnapshot.empty) {
-                        const referrerDoc = referrerSnapshot.docs[0];
-                        const referrerId = referrerDoc.id;
-                        const referralAmount = Math.round(task.reward * 0.05);
-                        
-                        await updateDoc(doc(db, "users", referrerId), {
-                            balance: increment(referralAmount)
-                        });
-                        
-                        // Enregistrer la commission
-                        await addDoc(referralsRef, {
-                            referrerId: referrerId,
-                            referredId: userId,
-                            amount: referralAmount,
-                            taskId: taskId,
-                            createdAt: serverTimestamp()
-                        });
-                    }
+                // Mettre à jour le solde dans l'interface
+                if (appState.currentUser && appState.currentUser.id === userId) {
+                    appState.currentUser.balance += reward;
+                    document.getElementById('userBalance').textContent = appState.currentUser.balance;
                 }
                 
                 // Recharger les tâches admin
                 await loadAdminTasks();
                 
-                showNotification("Niampy " + task.reward + " AR ny solde-nao nandritra ny vérification!", true);
+                showNotification("Niampy " + reward + " AR ny solde-nao nandritra ny vérification!", true);
             } catch (error) {
                 showNotification("Nisy olana: " + error.message, false);
             }
@@ -1974,6 +1927,10 @@
                 // Fermer le modal
                 document.getElementById('retraitModal').style.display = 'none';
                 
+                // Mettre à jour l'affichage
+                appState.currentUser.balance -= amount;
+                document.getElementById('userBalance').textContent = appState.currentUser.balance;
+                
                 // Afficher la notification
                 showNotification(`Tontosa ny fangatahana retrait ${amount} AR! Ho antsoina amin'ny ${phone} ianao.`, true);
                 
@@ -1981,8 +1938,85 @@
                 document.getElementById('retraitPhone').value = '';
                 document.getElementById('retraitName').value = '';
                 document.getElementById('retraitAmount').value = '';
+            } catch (error) {
+                showNotification("Nisy olana: " + error.message, false);
+            }
+        }
+        
+        async function processDeposit() {
+            const phone = document.getElementById('depositPhone').value;
+            const name = document.getElementById('depositName').value;
+            const amount = parseInt(document.getElementById('depositAmount').value);
+            
+            if (!phone || !name || !amount) {
+                showNotification("Ampidiro ny angona rehetra!", false);
+                return;
+            }
+            
+            if (amount < 5000) {
+                showNotification("Minimum 5000 AR ny fandraisana anjara!", false);
+                return;
+            }
+            
+            try {
+                // Ajouter le dépôt à la liste d'admin
+                const newDeposit = {
+                    userName: name,
+                    userPhone: phone,
+                    amount: amount,
+                    userId: appState.currentUser.id,
+                    date: new Date().toISOString(),
+                    status: "pending"
+                };
                 
-                 // Mettre à jour l'affichage
+                await addDoc(pendingDepositsRef, newDeposit);
+                
+                // Fermer le modal
+                document.getElementById('depositModal').style.display = 'none';
+                
+                showNotification("Nalefany tany amin'ny admin ilay fangatahana. Miandry vérification!", true);
+            } catch (error) {
+                showNotification("Nisy olana: " + error.message, false);
+            }
+        }
+        
+        async function publishContent() {
+            const title = document.getElementById('pubTitle').value;
+            const description = document.getElementById('pubDescription').value;
+            const conditions = document.getElementById('pubConditions').value;
+            const requiredPeople = parseInt(document.getElementById('requiredPeople').value);
+            
+            if (!title || !description || !conditions || !requiredPeople) {
+                showNotification("Ampidiro ny angona rehetra!", false);
+                return;
+            }
+            
+            if (appState.currentUser.depositBalance < 5000) {
+                showNotification("Tsy ampy ny vola ao amin'ny kaonty dépôt-nao!", false);
+                return;
+            }
+            
+            try {
+                // Créer la publication
+                const newPublication = {
+                    userId: appState.currentUser.id,
+                    title: title,
+                    description: description,
+                    conditions: conditions,
+                    requiredPeople: requiredPeople,
+                    currentPeople: 0,
+                    status: "active",
+                    createdAt: serverTimestamp()
+                };
+                
+                await addDoc(publicationsRef, newPublication);
+                
+                // Déduire le montant du dépôt
+                await updateDoc(doc(db, "users", appState.currentUser.id), {
+                    depositBalance: increment(-5000)
+                });
+                
+                // Mettre à jour l'affichage
                 appState.currentUser.depositBalance -= 5000;
                 document.getElementById('depositBalance').textContent = appState.currentUser.depositBalance;
                 document.getElementById('publishBtn').disabled = appState.currentUser.depositBalance < 5000;
@@ -1996,42 +2030,6 @@
                 showNotification("Voaray soa aminao ny publication-nao! Ho hitan'ny mpampiasa hafa izany.", true);
             } catch (error) {
                 showNotification("Nisy olana: " + error.message, false);
-            }
-        }
-        
-        async function loadPublications() {
-            // Cette fonction pourrait être utilisée pour afficher les publications
-            // dans l'interface utilisateur si nécessaire
-        }
-        
-        async function loadReferrals() {
-            const referralsList = document.getElementById('referralsList');
-            referralsList.innerHTML = '';
-            
-            const referralsQuery = query(referralsRef, where("referrerId", "==", appState.currentUser.id));
-            const referralsSnapshot = await getDocs(referralsQuery);
-            
-            if (referralsSnapshot.empty) {
-                referralsList.innerHTML = '<p>Tsy mbola manana filleul ianao</p>';
-                return;
-            }
-            
-            for (const referralDoc of referralsSnapshot.docs) {
-                const referral = referralDoc.data();
-                const referredUserDoc = await getDoc(doc(db, "users", referral.referredId));
-                
-                if (referredUserDoc.exists()) {
-                    const referredUser = referredUserDoc.data();
-                    
-                    const referralItem = document.createElement('div');
-                    referralItem.className = 'referral-item';
-                    referralItem.innerHTML = `
-                        <div>${referredUser.name}</div>
-                        <div>+${referral.amount || 0} AR</div>
-                    `;
-                    
-                    referralsList.appendChild(referralItem);
-                }
             }
         }
         
@@ -2049,8 +2047,8 @@
                 document.getElementById('publisherInterface').style.display = 'none';
                 document.getElementById('switchBtn').innerHTML = '<i class="fas fa-user-shield"></i> Mode Admin';
             }
-        }
-        
+    }
+
         function toggleSettingsMenu() {
             const settingsMenu = document.getElementById('settingsMenu');
             settingsMenu.classList.toggle('show');
@@ -2081,9 +2079,6 @@
                 notificationElement.classList.remove('show');
             }, 5000);
         }
-        
-        // Initialiser l'application
-        window.onload = init;
     </script>
 </body>
 </html>
