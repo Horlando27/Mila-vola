@@ -750,4 +750,832 @@
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-   
+        }
+        
+        .deposit-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f0f7ff;
+            border-radius: 15px;
+        }
+        
+        .deposit-info {
+            flex: 1;
+        }
+        
+        .deposit-btn {
+            background: linear-gradient(90deg, var(--publisher), #7b2cbf);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .deposit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(157, 78, 221, 0.3);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        textarea.form-input {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .publish-btn {
+            background: linear-gradient(90deg, var(--publisher), #7b2cbf);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .publish-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(157, 78, 221, 0.4);
+        }
+        
+        .publish-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        /* Modal de Retrait */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .retrait-form .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .modal-action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 20px 30px;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform: translateX(200%);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+            max-width: 400px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .success-notification {
+            background: linear-gradient(90deg, #28a745, #218838);
+            border-left: 6px solid #1e7e34;
+        }
+        
+        .error-notification {
+            background: linear-gradient(90deg, #dc3545, #c82333);
+            border-left: 6px solid #bd2130;
+        }
+        
+        .warning-notification {
+            background: linear-gradient(90deg, #ffc107, #e0a800);
+            border-left: 6px solid #d39e00;
+        }
+        
+        .notification-icon {
+            font-size: 2rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .no-tasks {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+        
+        .no-tasks-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+        }
+        
+        .whatsapp-icon {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+        
+        .admin-login {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .completed-task {
+            position: relative;
+            opacity: 0.7;
+        }
+        
+        .completed-task::after {
+            content: "Efa vita";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            background: var(--success);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1.5rem;
+            z-index: 10;
+        }
+        
+        @media (max-width: 992px) {
+            .interface-section {
+                flex-direction: column;
+            }
+            
+            .admin-interface {
+                border-left: none;
+                border-top: 1px solid #e0e0e0;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .system-header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 20px;
+            }
+            
+            .user-info {
+                width: 100%;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .balance-container {
+                width: 100%;
+                justify-content: space-between;
+                margin-top: 10px;
+            }
+            
+            .tasks-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .task-card {
+                padding: 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .auth-container {
+                margin: 20px auto;
+                padding: 25px;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+    </head>
+<body>
+    <!-- Section d'authentification -->
+    <div class="auth-container" id="authContainer">
+        <div class="auth-header">
+            <h1 class="auth-title" id="authTitle">Fidirana</h1>
+            <p class="auth-subtitle" id="authSubtitle">Ampidiro ny mailaka sy ny teny miafina</p>
+        </div>
+        
+        <div class="auth-form" id="authForm">
+            <div class="form-group" id="nameField" style="display: none;">
+                <label class="form-label">Anarana feno:</label>
+                <input type="text" class="form-input" id="fullName" placeholder="Anaranao">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Mailaka:</label>
+                <input type="email" class="form-input" id="email" placeholder="mailaka@ohatra.com">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Teny miafina:</label>
+                <input type="password" class="form-input" id="password" placeholder="••••••••">
+            </div>
+            
+            <div class="form-group" id="userTypeField" style="display: none;">
+                <label class="form-label">Karazana mpampiasa:</label>
+                <div class="radio-group">
+                    <div class="radio-option" data-type="jobseeker">
+                        <i class="fas fa-search"></i>
+                        <div>Mitady asa</div>
+                    </div>
+                    <div class="radio-option" data-type="publisher">
+                        <i class="fas fa-bullhorn"></i>
+                        <div>Handefa publication</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group" id="referralField" style="display: none;">
+                <label class="form-label">Laharana referal (raha manana):</label>
+                <input type="text" class="form-input" id="referralCode" placeholder="Laharana referal">
+            </div>
+            
+            <button class="submit-btn" id="submitBtn">Hiditra</button>
+            
+            <div class="auth-switch">
+                <span id="switchText">Tsy manana kaonty?</span>
+                <a href="#" id="switchLink">Hisoratra anarana</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Application principale -->
+    <div class="system-container" id="systemContainer">
+        <header class="system-header">
+            <div class="header-overlay"></div>
+            <div class="logo-container">
+                <div class="logo">🤖</div>
+                <div class="system-title">MILA VOLA</div>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-details">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div>
+                        <div id="username">Mpampiasa</div>
+                        <div id="userId"></div>
+                        <div id="userType"></div>
+                    </div>
+                    <div class="settings-menu" id="settingsMenu">
+                        <div class="settings-header">
+                            <div class="settings-title">Paramètres</div>
+                            <div class="settings-close" id="settingsClose"><i class="fas fa-times"></i></div>
+                        </div>
+                        
+                        <div class="settings-item">
+                            <div class="form-label">Lien de parrainage:</div>
+                            <div class="referral-link">
+                                <span id="referralLink"></span>
+                                <button class="copy-btn" id="copyReferralBtn">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-item">
+                            <div class="form-label">Mes filleuls:</div>
+                            <div class="referrals-list" id="referralsList">
+                                <!-- Les filleuls seront affichés ici -->
+                            </div>
+                        </div>
+                        
+                        <div class="settings-item">
+                            <button class="logout-btn" id="logoutBtn" style="width: 100%;">
+                                <i class="fas fa-sign-out-alt"></i> Hivoaka
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="balance-container">
+                    <div class="balance-card">
+                        <div class="balance-label">Solde:</div>
+                        <div class="balance-amount"><span id="userBalance">0</span> AR</div>
+                    </div>
+                    <button class="retrait-btn" id="retraitBtn">
+                        <i class="fas fa-money-bill-wave"></i> Retrait
+                    </button>
+                </div>
+                <button class="switch-btn" id="switchBtn">
+                    <i class="fas fa-user-shield"></i> Mode Admin
+                </button>
+            </div>
+        </header>
+        
+        <div class="interface-section">
+            <!-- Interface Utilisateur -->
+            <div class="user-interface" id="userInterface">
+                <h2 class="section-title"><i class="fas fa-tasks"></i> Asa Misy</h2>
+                
+                <div class="tasks-container" id="tasksContainer">
+                    <!-- Les tâches seront chargées dynamiquement -->
+                </div>
+            </div>
+            
+            <!-- Interface Admin -->
+            <div class="admin-interface" id="adminInterface">
+                <h2 class="section-title"><i class="fas fa-user-shield"></i> Interface Admin</h2>
+                
+                <div class="admin-container">
+                    <div class="admin-login" id="adminLogin">
+                        <div class="form-group">
+                            <label class="form-label">Teny miafina admin:</label>
+                            <input type="password" class="form-input" id="adminPassword" placeholder="Ampidiro ny teny miafina">
+                        </div>
+                        <button class="admin-confirm-btn" id="adminLoginBtn">
+                            <i class="fas fa-lock"></i> Hiditra
+                        </button>
+                    </div>
+                    
+                    <div class="admin-list" id="adminList" style="display: none;">
+                        <!-- Les preuves seront ajoutées dynamiquement ici -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Interface Publisher -->
+            <div class="publisher-interface" id="publisherInterface">
+                <h2 class="section-title"><i class="fas fa-bullhorn"></i> Handefa Publication</h2>
+                
+                <div class="deposit-container">
+                    <div class="deposit-info">
+                        <div class="balance-label">Solde dépôt:</div>
+                        <div class="balance-amount"><span id="depositBalance">0</span> AR</div>
+                        <p>Minimum 5000 AR ny fandraisana anjara</p>
+                    </div>
+                    <button class="deposit-btn" id="depositBtn">
+                        <i class="fas fa-money-bill-wave"></i> Hanampy vola
+                    </button>
+                </div>
+                
+                <div class="publisher-form">
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label">Lohateny:</label>
+                                <input type="text" class="form-input" id="pubTitle" placeholder="Lohatenin'ny publication">
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label">Isan'ny olona ilaina:</label>
+                                <input type="number" class="form-input" id="requiredPeople" min="100" placeholder="100" value="100">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Toriteny:</label>
+                        <textarea class="form-input" id="pubDescription" placeholder="Soraty eto ny toriteny..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Fepetra:</label>
+                        <textarea class="form-input" id="pubConditions" placeholder="Soraty eto ny fepetra..."></textarea>
+                    </div>
+                    
+                    <button class="publish-btn" id="publishBtn" disabled>
+                        <i class="fas fa-paper-plane"></i> Alefa ny publication
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal de Retrait -->
+        <div class="modal" id="retraitModal">
+            <div class="modal-content">
+                <span class="close-modal" id="closeModal">&times;</span>
+                <h2 class="modal-title">Fangatahana Retrait</h2>
+                
+                <div class="retrait-form">
+                    <div class="form-group">
+                        <label class="form-label">Laharana finday WhatsApp:</label>
+                        <input type="text" class="form-input" id="retraitPhone" placeholder="+261XXXXXXXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Anarana feno:</label>
+                        <input type="text" class="form-input" id="retraitName" placeholder="Anaranao" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Montant (minimum 1000 AR):</label>
+                        <input type="number" class="form-input" id="retraitAmount" min="1000" placeholder="1000" required>
+                    </div>
+                    
+                    <div class="modal-action-buttons">
+                        <button class="admin-confirm-btn" id="confirmRetrait">
+                            <i class="fas fa-check"></i> Confirmer
+                        </button>
+                        <button class="admin-reject-btn" id="cancelRetrait">
+                            <i class="fas fa-times"></i> Annuler
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal de Dépôt -->
+        <div class="modal" id="depositModal">
+            <div class="modal-content">
+                <span class="close-modal" id="closeDepositModal">&times;</span>
+                <h2 class="modal-title">Fampidirana vola</h2>
+                
+                <div class="retrait-form">
+                    <div class="form-group">
+                        <label class="form-label">Laharana finday:</label>
+                        <input type="text" class="form-input" id="depositPhone" placeholder="+261XXXXXXXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Anarana feno:</label>
+                        <input type="text" class="form-input" id="depositName" placeholder="Anaranao" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Montant (minimum 5000 AR):</label>
+                        <input type="number" class="form-input" id="depositAmount" min="5000" placeholder="5000" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Laharana compte Mvola:</label>
+                        <div class="form-input" style="background: #f8f9fa; cursor: pointer;" id="mvolaNumber">
+                            <i class="fas fa-phone"></i> 0323911654
+                        </div>
+                        <small>Tsindrio ny laharana raha te hiantso</small>
+                    </div>
+                    
+                    <div class="proof-status proof-pending" style="margin: 20px 0;">
+                        <i class="fas fa-info-circle"></i> Aorian'ny fandoavam-bola, alefaso eto ny porofo
+                    </div>
+                    
+                    <div class="modal-action-buttons">
+                        <button class="admin-confirm-btn" id="confirmDeposit">
+                            <i class="fas fa-check"></i> Nandefa vola
+                        </button>
+                        <button class="admin-reject-btn" id="cancelDeposit">
+                            <i class="fas fa-times"></i> Hanafoana
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="notification" id="notification">
+            <div class="notification-icon">✅</div>
+            <div id="notificationMessage">Verification réussi! Solde mis à jour.</div>
+        </div>
+
+        <footer>
+            Système Mila Vola &copy; 2025 | Tous droits réservés
+        </footer>
+                        </div>
+
+      <!-- Firebase + App JS -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword, 
+            signInWithEmailAndPassword, 
+            onAuthStateChanged, 
+            updateProfile,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+        
+        import { 
+            getFirestore, 
+            doc, 
+            setDoc, 
+            getDoc, 
+            updateDoc, 
+            addDoc, 
+            collection, 
+            deleteDoc, 
+            serverTimestamp, 
+            query, 
+            orderBy, 
+            onSnapshot, 
+            getDocs,
+            where
+        } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+        
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCK4HqGSjYRT2jFNhAvniSWIzhDvEb2qAQ",
+            authDomain: "asa-en-ligne.firebaseapp.com",
+            projectId: "asa-en-ligne",
+            storageBucket: "asa-en-ligne.appspot.com",
+            messagingSenderId: "58359363245",
+            appId: "1:58359363245:web:ca5969776ce9cd86aef824",
+            measurementId: "G-MRVHVWPV71"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        // Références aux collections
+        const usersRef = collection(db, "users");
+        const tasksRef = collection(db, "tasks");
+        const pendingTasksRef = collection(db, "pendingTasks");
+        const pendingDepositsRef = collection(db, "pendingDeposits");
+        const publicationsRef = collection(db, "publications");
+        const referralsRef = collection(db, "referrals");
+        
+        // État de l'application
+        const appState = {
+            currentUser: null,
+            pendingTasks: [],
+            pendingDeposits: [],
+            publications: [],
+            currentInterface: 'user',
+            completedTasks: []
+        };
+        
+        // Initialisation
+        function init() {
+            // Configurer les événements
+            setupAuthEvents();
+            setupAppEvents();
+            
+            // Observer l'état d'authentification
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    // Charger les données utilisateur depuis Firestore
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (userDoc.exists()) {
+                        loginUser(userDoc.data());
+                        loadCompletedTasks();
+                        loadPublications();
+                    } else {
+                        showNotification("Tsy misy ny kaonty!", false);
+                    }
+                } else {
+                    // Afficher le formulaire de connexion
+                    showLogin();
+                }
+            });
+        }
+        
+        function setupAuthEvents() {
+            const switchLink = document.getElementById('switchLink');
+            const submitBtn = document.getElementById('submitBtn');
+            const authTitle = document.getElementById('authTitle');
+            const authSubtitle = document.getElementById('authSubtitle');
+            const switchText = document.getElementById('switchText');
+            const nameField = document.getElementById('nameField');
+            const userTypeField = document.getElementById('userTypeField');
+            const referralField = document.getElementById('referralField');
+            const radioOptions = document.querySelectorAll('.radio-option');
+            
+            // Basculer entre connexion et inscription
+            switchLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                const isLogin = authTitle.textContent === 'Fidirana';
+                
+                if (isLogin) {
+                    // Passer à l'inscription
+                    authTitle.textContent = 'Hisoratra anarana';
+                    authSubtitle.textContent = 'Mamorona kaonty vaovao';
+                    submitBtn.textContent = 'Hisoratra anarana';
+                    switchText.textContent = 'Efa manana kaonty?';
+                    switchLink.textContent = 'Hiditra';
+                    nameField.style.display = 'flex';
+                    userTypeField.style.display = 'block';
+                    referralField.style.display = 'block';
+                } else {
+                    // Passer à la connexion
+                    authTitle.textContent = 'Fidirana';
+                    authSubtitle.textContent = 'Ampidiro ny mailaka sy ny teny miafina';
+                    submitBtn.textContent = 'Hiditra';
+                    switchText.textContent = 'Tsy manana kaonty?';
+                    switchLink.textContent = 'Hisoratra anarana';
+                    nameField.style.display = 'none';
+                    userTypeField.style.display = 'none';
+                    referralField.style.display = 'none';
+                }
+            });
+            
+            // Sélection du type d'utilisateur
+            radioOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    radioOptions.forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Soumission du formulaire
+            submitBtn.addEventListener('click', processAuth);
+        }
+        
+        function setupAppEvents() {
+            // Boutons "Vita ny asa" (seront gérés dynamiquement)
+            
+            // Boutons de retrait
+            document.getElementById('retraitBtn').addEventListener('click', () => {
+                document.getElementById('retraitModal').style.display = 'flex';
+            });
+            
+            document.getElementById('closeModal').addEventListener('click', () => {
+                document.getElementById('retraitModal').style.display = 'none';
+            });
+            
+            document.getElementById('confirmRetrait').addEventListener('click', processRetrait);
+            document.getElementById('cancelRetrait').addEventListener('click', () => {
+                document.getElementById('retraitModal').style.display = 'none';
+            });
+            
+            // Bouton pour changer d'interface
+            document.getElementById('switchBtn').addEventListener('click', toggleInterface);
+            
+            // Bouton de déconnexion
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+            
+            // Bouton de dépôt
+            document.getElementById('depositBtn').addEventListener('click', () => {
+                document.getElementById('depositModal').style.display = 'flex';
+            });
+            
+            // Bouton de dépôt modal
+            document.getElementById('confirmDeposit').addEventListener('click', processDeposit);
+            document.getElementById('closeDepositModal').addEventListener('click', () => {
+                document.getElementById('depositModal').style.display = 'none';
+            });
+            
+            // Appel téléphonique
+            document.getElementById('mvolaNumber').addEventListener('click', function() {
+                window.location.href = 'tel:+261323911654';
+            });
+            
+            // Bouton de publication
+            document.getElementById('publishBtn').addEventListener('click', publishContent);
+            
+            // Vérification admin
+            document.getElementById('adminLoginBtn').addEventListener('click', adminLogin);
+            
+            // Icône de paramètres
+            document.getElementById('userAvatar').addEventListener('click', toggleSettingsMenu);
+            document.getElementById('settingsClose').addEventListener('click', toggleSettingsMenu);
+            
+            // Copier le lien de parrainage
+            document.getElementById('copyReferralBtn').addEventListener('click', copyReferralLink);
+        }
+        
+        async function processAuth() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const isLogin = document.getElementById('authTitle').textContent === 'Fidirana';
+            
+            if (!email || !password) {
+                showNotification("Ampidiro ny mailaka sy ny teny miafina!", false);
+                return;
+            }
+            
+            if (isLogin) {
+                // Connexion avec Firebase Auth
+                try {
+                    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                } catch (error) {
+                    showNotification("Diso ny mailaka na ny teny miafina!", false);
+                }
+            } else {
+                // Inscription avec Firebase Auth
+                try {
+                    const fullName = document.getElementById('fullName').value;
+                    const selectedType = document.querySelector('.radio-option.selected');
+                    const referralCode = document.getElementById('referralCode').value;
+                    
+                    if (!fullName) {
+                        showNotification("Ampidiro ny anaranao feno!", false);
+                        return;
+                    }
+                    
+                    if (!selectedType) {
+                        showNotification("Safidio ny karazana mpampiasa!", false);
+                        return;
+                    }
+                    
+                    const userType = selectedType.dataset.type;
+                    
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    const user = userCredential.user;
+                    
+                    // Générer un code de parrainage
+                    const newReferralCode = generateReferralCode();
+                    
+                    // Créer l'objet utilisateur
+                    const newUser = {
+                        id: user.uid,
+                        name: fullName,
+                        email: email,
+                        type: userType,
+                        balance: 0,
+                        depositBalance: 0,
+                        joined: new Date().toISOString(),
+                        referralCode: newReferralCode,
+                        referredBy: referralCode || null
+                    };
+                    
+                    // Enregistrer dans Firestore
+                    await setDoc(doc(db, "users", user.uid), newUser);
+                    
+                    // Mettre à jour le profil Firebase (nom)
+                    await updateProfile(user, { displayName: fullName });
+                    
+                    // Si l'utilisateur a un parrain, enregistrer le filleul
+                    if (referralCode) {
+                        const referrerQuery = query(usersRef, where("referralCode", "==", referralCode));
+                        const referrerSnapshot = await getDocs(referrerQuery);
+                        if (!referrerSnapshot.empty) {
+                            const referrerDoc = referrerSnapshot.docs[0];
+                            const referrerId = referrerDoc.id;
+                            
+                            // Enregistrer la relation de parrainage
+                            await addDoc(referralsRef, {
+                                referrerId: referrerId,
+                                referredId: user.uid,
+                                createdAt: serverTimestamp()
+                            });
+                            
+                            // Créditer le parrain
+                            await updateDoc(doc(db, "users", referrerId), {
+                                balance: increment(50) // Bonus initial
+                            });
+                        }
+                    }
