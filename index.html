@@ -1982,7 +1982,108 @@
                 document.getElementById('retraitName').value = '';
                 document.getElementById('retraitAmount').value = '';
                 
-                // Mettre à jour l'affichage
+                 // Mettre à jour l'affichage
                 appState.currentUser.depositBalance -= 5000;
                 document.getElementById('depositBalance').textContent = appState.currentUser.depositBalance;
-                document.getElementById('publishBtn').disabled = appState.currentUser.deposit
+                document.getElementById('publishBtn').disabled = appState.currentUser.depositBalance < 5000;
+                
+                // Réinitialiser le formulaire
+                document.getElementById('pubTitle').value = '';
+                document.getElementById('pubDescription').value = '';
+                document.getElementById('pubConditions').value = '';
+                document.getElementById('requiredPeople').value = '100';
+                
+                showNotification("Voaray soa aminao ny publication-nao! Ho hitan'ny mpampiasa hafa izany.", true);
+            } catch (error) {
+                showNotification("Nisy olana: " + error.message, false);
+            }
+        }
+        
+        async function loadPublications() {
+            // Cette fonction pourrait être utilisée pour afficher les publications
+            // dans l'interface utilisateur si nécessaire
+        }
+        
+        async function loadReferrals() {
+            const referralsList = document.getElementById('referralsList');
+            referralsList.innerHTML = '';
+            
+            const referralsQuery = query(referralsRef, where("referrerId", "==", appState.currentUser.id));
+            const referralsSnapshot = await getDocs(referralsQuery);
+            
+            if (referralsSnapshot.empty) {
+                referralsList.innerHTML = '<p>Tsy mbola manana filleul ianao</p>';
+                return;
+            }
+            
+            for (const referralDoc of referralsSnapshot.docs) {
+                const referral = referralDoc.data();
+                const referredUserDoc = await getDoc(doc(db, "users", referral.referredId));
+                
+                if (referredUserDoc.exists()) {
+                    const referredUser = referredUserDoc.data();
+                    
+                    const referralItem = document.createElement('div');
+                    referralItem.className = 'referral-item';
+                    referralItem.innerHTML = `
+                        <div>${referredUser.name}</div>
+                        <div>+${referral.amount || 0} AR</div>
+                    `;
+                    
+                    referralsList.appendChild(referralItem);
+                }
+            }
+        }
+        
+        function toggleInterface() {
+            if (appState.currentInterface === 'user') {
+                appState.currentInterface = 'admin';
+                document.getElementById('userInterface').style.display = 'none';
+                document.getElementById('adminInterface').style.display = 'flex';
+                document.getElementById('publisherInterface').style.display = 'none';
+                document.getElementById('switchBtn').innerHTML = '<i class="fas fa-user"></i> Mode Utilisateur';
+            } else {
+                appState.currentInterface = 'user';
+                document.getElementById('userInterface').style.display = 'flex';
+                document.getElementById('adminInterface').style.display = 'none';
+                document.getElementById('publisherInterface').style.display = 'none';
+                document.getElementById('switchBtn').innerHTML = '<i class="fas fa-user-shield"></i> Mode Admin';
+            }
+        }
+        
+        function toggleSettingsMenu() {
+            const settingsMenu = document.getElementById('settingsMenu');
+            settingsMenu.classList.toggle('show');
+        }
+        
+        function copyReferralLink() {
+            const referralLink = document.getElementById('referralLink').textContent;
+            navigator.clipboard.writeText(referralLink)
+                .then(() => showNotification("Voacopy ny lien!", true))
+                .catch(err => showNotification("Tsy afaka natao copy: " + err, false));
+        }
+        
+        // Fonction pour générer un code de parrainage
+        function generateReferralCode() {
+            return Math.random().toString(36).substr(2, 8).toUpperCase();
+        }
+        
+        // Afficher une notification
+        function showNotification(message, isSuccess) {
+            const notificationElement = document.getElementById('notification');
+            const notificationMessage = document.getElementById('notificationMessage');
+            notificationMessage.textContent = message;
+            
+            notificationElement.className = `notification ${isSuccess ? 'success-notification' : 'error-notification'}`;
+            notificationElement.classList.add('show');
+            
+            setTimeout(() => {
+                notificationElement.classList.remove('show');
+            }, 5000);
+        }
+        
+        // Initialiser l'application
+        window.onload = init;
+    </script>
+</body>
+</html>
