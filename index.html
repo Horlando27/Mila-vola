@@ -1,2084 +1,309 @@
-
 <!DOCTYPE html>
-<html lang="mg">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Système Mila Vola</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #4361ee;
-            --secondary: #3a0ca3;
-            --success: #4cc9f0;
-            --warning: #f72585;
-            --danger: #e63946;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #6c757d;
-            --whatsapp: #25D366;
-            --retrait: #7209b7;
-            --admin: #ff6b6b;
-            --publisher: #9d4edd;
-            --referral: #90be6d;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1d3557, #457b9d);
-            min-height: 100vh;
-            padding: 20px;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        /* Login/Signup Styles */
-        .auth-container {
-            max-width: 500px;
-            width: 100%;
-            margin: 20px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-        
-        .auth-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .auth-title {
-            font-size: 2.2rem;
-            color: var(--secondary);
-            margin-bottom: 10px;
-        }
-        
-        .auth-subtitle {
-            color: var(--gray);
-            font-size: 1.1rem;
-        }
-        
-        .auth-switch {
-            text-align: center;
-            margin-top: 15px;
-            color: var(--gray);
-        }
-        
-        .auth-switch a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: bold;
-        }
-        
-        .auth-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .form-label {
-            font-weight: 600;
-            color: #444;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-        
-        .form-input:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.2);
-        }
-        
-        .radio-group {
-            display: flex;
-            gap: 20px;
-            margin: 10px 0;
-        }
-        
-        .radio-option {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 20px;
-            background: #f0f7ff;
-            border-radius: 10px;
-            flex: 1;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.3s;
-        }
-        
-        .radio-option.selected {
-            border-color: var(--primary);
-            background: #e6eeff;
-        }
-        
-        .radio-option i {
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-        
-        .radio-option div {
-            font-weight: 500;
-        }
-        
-        .submit-btn {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
-        }
-        
-        .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
-        }
-        
-        .system-container {
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            min-height: 95vh;
-            display: none;
-        }
-        
-        /* Header Styles */
-        .system-header {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .header-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 100,0 100,100" fill="rgba(255,255,255,0.1)"/></svg>');
-            background-size: cover;
-            opacity: 0.3;
-        }
-        
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .logo {
-            font-size: 2.5rem;
-        }
-        
-        .system-title {
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .user-details {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            position: relative;
-        }
-        
-        .user-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, var(--success), var(--primary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: white;
-            cursor: pointer;
-        }
-        
-        .settings-menu {
-            position: absolute;
-            top: 60px;
-            right: 0;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            padding: 15px;
-            min-width: 300px;
-            z-index: 100;
-            display: none;
-        }
-        
-        .settings-menu.show {
-            display: block;
-        }
-        
-        .settings-header {
-            padding-bottom: 10px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .settings-title {
-            font-weight: bold;
-            color: var(--secondary);
-        }
-        
-        .settings-close {
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: var(--gray);
-        }
-        
-        .settings-item {
-            padding: 10px 0;
-        }
-        
-        .referral-link {
-            background: #f0f7ff;
-            border-radius: 8px;
-            padding: 10px;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .referral-link span {
-            flex: 1;
-            word-break: break-all;
-        }
-        
-        .copy-btn {
-            background: var(--referral);
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        
-        .referrals-list {
-            max-height: 200px;
-            overflow-y: auto;
-            margin-top: 10px;
-        }
-        
-        .referral-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .balance-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .balance-card {
-            background: rgba(255, 255, 255, 0.9);
-            color: var(--dark);
-            padding: 10px 20px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .balance-label {
-            font-size: 1rem;
-            color: var(--gray);
-        }
-        
-        .balance-amount {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--secondary);
-        }
-        
-        .retrait-btn {
-            background: var(--retrait);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-        
-        .retrait-btn:hover {
-            background: #5a189a;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(114, 9, 183, 0.3);
-        }
-        
-        .switch-btn {
-            background: var(--admin);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-        
-        .switch-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
-        }
-        
-        .logout-btn {
-            background: var(--danger);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-        
-        .logout-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3);
-        }
-        
-        /* Interface Section */
-        .interface-section {
-            display: flex;
-            flex: 1;
-            min-height: 600px;
-        }
-        
-        /* Interface Utilisateur */
-        .user-interface {
-            flex: 1;
-            padding: 30px;
-            background: var(--light);
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .section-title {
-            font-size: 1.8rem;
-            color: var(--secondary);
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 3px solid var(--success);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .tasks-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-            flex: 1;
-        }
-        
-        .task-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e0e0e0;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .task-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background: linear-gradient(90deg, var(--primary), var(--success));
-        }
-        
-        .task-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            align-items: center;
-        }
-        
-        .task-title {
-            font-weight: bold;
-            color: var(--dark);
-            font-size: 1.4rem;
-            flex: 1;
-        }
-        
-        .reward-badge {
-            background: linear-gradient(45deg, #f9c74f, #f8961e);
-            color: white;
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            min-width: 110px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(249, 199, 79, 0.3);
-        }
-        
-        .task-description {
-            margin-bottom: 25px;
-            line-height: 1.7;
-            color: #555;
-            flex: 1;
-        }
-        
-        .task-complete-btn {
-            display: block;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: white;
-            text-align: center;
-            padding: 14px;
-            border-radius: 10px;
-            text-decoration: none;
-            margin: 10px 0;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .task-complete-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
-        }
-        
-        .whatsapp-form {
-            margin-top: 10px;
-            padding: 20px;
-            background: #f0f7ff;
-            border-radius: 10px;
-            display: none;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #444;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 14px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-        
-        .form-input:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.2);
-        }
-        
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .whatsapp-btn {
-            background: linear-gradient(90deg, var(--whatsapp), #128C7E);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            flex: 1;
-        }
-        
-        .whatsapp-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
-        }
-        
-        .confirm-btn {
-            background: linear-gradient(90deg, var(--success), #00b4d8);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            flex: 1;
-        }
-        
-        .confirm-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(76, 201, 240, 0.3);
-        }
-        
-        .confirm-btn:disabled {
-            background: #cccccc;
-            cursor: not-allowed;
-        }
-        
-        .proof-status {
-            text-align: center;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 8px;
-            display: none;
-        }
-        
-        .proof-pending {
-            background: rgba(255, 183, 3, 0.2);
-            color: #ffb703;
-        }
-        
-        /* Interface Admin */
-        .admin-interface {
-            flex: 1;
-            padding: 30px;
-            background: #f0f7ff;
-            border-left: 1px solid #e0e0e0;
-            display: flex;
-            flex-direction: column;
-            display: none;
-        }
-        
-        .admin-interface .section-title {
-            color: var(--admin);
-            border-bottom: 3px solid var(--admin);
-        }
-        
-        .admin-container {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .admin-list {
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .admin-item {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border-left: 4px solid var(--admin);
-            transition: all 0.3s;
-        }
-        
-        .admin-item:hover {
-            transform: translateX(5px);
-        }
-        
-        .admin-info {
-            flex: 1;
-        }
-        
-        .admin-task-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #333;
-            font-size: 1.1rem;
-        }
-        
-        .admin-user-info {
-            color: var(--gray);
-            font-size: 0.9rem;
-            margin: 5px 0;
-        }
-        
-        .admin-date {
-            color: var(--gray);
-            font-size: 0.8rem;
-        }
-        
-        .admin-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .admin-confirm-btn {
-            background: linear-gradient(90deg, var(--success), #00b4d8);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            flex: 1;
-        }
-        
-        .admin-confirm-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(76, 201, 240, 0.3);
-        }
-        
-        .admin-reject-btn {
-            background: linear-gradient(90deg, var(--danger), #d00000);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            flex: 1;
-        }
-        
-        .admin-reject-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3);
-        }
-        
-        /* Interface Publisher */
-        .publisher-interface {
-            flex: 1;
-            padding: 30px;
-            background: #f8f0ff;
-            display: flex;
-            flex-direction: column;
-            display: none;
-        }
-        
-         .publisher-interface .section-title {
-            color: var(--publisher);
-            border-bottom: 3px solid var(--publisher);
-        }
-        
-        .publisher-form {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-        }
-        
-        .deposit-container {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: #f0f7ff;
-            border-radius: 15px;
-        }
-        
-        .deposit-info {
-            flex: 1;
-        }
-        
-        .deposit-btn {
-            background: linear-gradient(90deg, var(--publisher), #7b2cbf);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-        
-        .deposit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(157, 78, 221, 0.3);
-        }
-        
-        .form-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .form-col {
-            flex: 1;
-        }
-        
-        textarea.form-input {
-            min-height: 150px;
-            resize: vertical;
-        }
-        
-        .publish-btn {
-            background: linear-gradient(90deg, var(--publisher), #7b2cbf);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-            margin-top: 20px;
-        }
-        
-        .publish-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(157, 78, 221, 0.4);
-        }
-        
-        .publish-btn:disabled {
-            background: #cccccc;
-            cursor: not-allowed;
-        }
-        
-        /* Modal de Retrait */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-content {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            position: relative;
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--gray);
-        }
-        
-        .modal-title {
-            font-size: 1.8rem;
-            color: var(--secondary);
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .retrait-form .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .modal-action-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            padding: 20px 30px;
-            border-radius: 12px;
-            color: white;
-            font-weight: bold;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            transform: translateX(200%);
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 1000;
-            max-width: 400px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .notification.show {
-            transform: translateX(0);
-        }
-        
-        .success-notification {
-            background: linear-gradient(90deg, #28a745, #218838);
-            border-left: 6px solid #1e7e34;
-        }
-        
-        .error-notification {
-            background: linear-gradient(90deg, #dc3545, #c82333);
-            border-left: 6px solid #bd2130;
-        }
-        
-        .warning-notification {
-            background: linear-gradient(90deg, #ffc107, #e0a800);
-            border-left: 6px solid #d39e00;
-        }
-        
-        .notification-icon {
-            font-size: 2rem;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: var(--gray);
-            font-size: 0.9rem;
-            background: #f8f9fa;
-            border-top: 1px solid #e9ecef;
-        }
-        
-        .no-tasks {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--gray);
-        }
-        
-        .no-tasks-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            color: #e0e0e0;
-        }
-        
-        .whatsapp-icon {
-            font-size: 2rem;
-            margin-right: 10px;
-        }
-        
-        .admin-login {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .completed-task {
-            position: relative;
-            opacity: 0.7;
-        }
-        
-        .completed-task::after {
-            content: "Efa vita";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-15deg);
-            background: var(--success);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 1.5rem;
-            z-index: 10;
-        }
-        
-        @media (max-width: 992px) {
-            .interface-section {
-                flex-direction: column;
-            }
-            
-            .admin-interface {
-                border-left: none;
-                border-top: 1px solid #e0e0e0;
-            }
-            
-            .form-row {
-                flex-direction: column;
-                gap: 15px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .system-header {
-                flex-direction: column;
-                gap: 15px;
-                padding: 20px;
-            }
-            
-            .user-info {
-                width: 100%;
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .balance-container {
-                width: 100%;
-                justify-content: space-between;
-                margin-top: 10px;
-            }
-            
-            .tasks-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .task-card {
-                padding: 20px;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
-            
-            .auth-container {
-                margin: 20px auto;
-                padding: 25px;
-            }
-            
-            .radio-group {
-                flex-direction: column;
-            }
-        }
-    </style>
-    </head>
-<body>
-    <!-- Section d'authentification -->
-    <div class="auth-container" id="authContainer">
-        <div class="auth-header">
-            <h1 class="auth-title" id="authTitle">Fidirana</h1>
-            <p class="auth-subtitle" id="authSubtitle">Ampidiro ny mailaka sy ny teny miafina</p>
-        </div>
-        
-        <div class="auth-form" id="authForm">
-            <div class="form-group" id="nameField" style="display: none;">
-                <label class="form-label">Anarana feno:</label>
-                <input type="text" class="form-input" id="fullName" placeholder="Anaranao">
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Mailaka:</label>
-                <input type="email" class="form-input" id="email" placeholder="mailaka@ohatra.com">
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Teny miafina:</label>
-                <input type="password" class="form-input" id="password" placeholder="••••••••">
-            </div>
-            
-            <div class="form-group" id="userTypeField" style="display: none;">
-                <label class="form-label">Karazana mpampiasa:</label>
-                <div class="radio-group">
-                    <div class="radio-option" data-type="jobseeker">
-                        <i class="fas fa-search"></i>
-                        <div>Mitady asa</div>
-                    </div>
-                    <div class="radio-option" data-type="publisher">
-                        <i class="fas fa-bullhorn"></i>
-                        <div>Handefa publication</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="form-group" id="referralField" style="display: none;">
-                <label class="form-label">Laharana referal (raha manana):</label>
-                <input type="text" class="form-input" id="referralCode" placeholder="Laharana referal">
-            </div>
-            
-            <button class="submit-btn" id="submitBtn">Hiditra</button>
-            
-            <div class="auth-switch">
-                <span id="switchText">Tsy manana kaonty?</span>
-                <a href="#" id="switchLink">Hisoratra anarana</a>
-            </div>
-        </div>
-    </div>
+  <meta charset="UTF-8">
+  <title>Mila Vola - Microtask Malagasy</title>
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
     
-    <!-- Application principale -->
-    <div class="system-container" id="systemContainer">
-        <header class="system-header">
-            <div class="header-overlay"></div>
-            <div class="logo-container">
-                <div class="logo">🤖</div>
-                <div class="system-title">MILA VOLA</div>
-            </div>
-            
-            <div class="user-info">
-                <div class="user-details">
-                    <div class="user-avatar" id="userAvatar">U</div>
-                    <div>
-                        <div id="username">Mpampiasa</div>
-                        <div id="userId"></div>
-                        <div id="userType"></div>
-                    </div>
-                    <div class="settings-menu" id="settingsMenu">
-                        <div class="settings-header">
-                            <div class="settings-title">Paramètres</div>
-                            <div class="settings-close" id="settingsClose"><i class="fas fa-times"></i></div>
-                        </div>
-                        
-                        <div class="settings-item">
-                            <div class="form-label">Lien de parrainage:</div>
-                            <div class="referral-link">
-                                <span id="referralLink"></span>
-                                <button class="copy-btn" id="copyReferralBtn">
-                                    <i class="fas fa-copy"></i> Copy
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-item">
-                            <div class="form-label">Mes filleuls:</div>
-                            <div class="referrals-list" id="referralsList">
-                                <!-- Les filleuls seront affichés ici -->
-                            </div>
-                        </div>
-                        
-                        <div class="settings-item">
-                            <button class="logout-btn" id="logoutBtn" style="width: 100%;">
-                                <i class="fas fa-sign-out-alt"></i> Hivoaka
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="balance-container">
-                    <div class="balance-card">
-                        <div class="balance-label">Solde:</div>
-                        <div class="balance-amount"><span id="userBalance">0</span> AR</div>
-                    </div>
-                    <button class="retrait-btn" id="retraitBtn">
-                        <i class="fas fa-money-bill-wave"></i> Retrait
-                    </button>
-                </div>
-                <button class="switch-btn" id="switchBtn">
-                    <i class="fas fa-user-shield"></i> Mode Admin
-                </button>
-            </div>
-        </header>
-        
-        <div class="interface-section">
-            <!-- Interface Utilisateur -->
-            <div class="user-interface" id="userInterface">
-                <h2 class="section-title"><i class="fas fa-tasks"></i> Asa Misy</h2>
-                
-                <div class="tasks-container" id="tasksContainer">
-                    <div class="task-card">
-                        <div class="task-header">
-                            <div class="task-title">Manao "J'aime" Facebook</div>
-                            <div class="reward-badge">+50 AR</div>
-                        </div>
-                        <div class="task-description">
-                            Tsindrio ny lien eto ambany, dia manao "J'aime" ilay publication.
-                            Rehefa vita ilay asa, tsindrio ny bokitra "Vita ny asa".
-                        </div>
-                        <a href="https://facebook.com" class="task-complete-btn" target="_blank">
-                            <i class="fab fa-facebook"></i> Iditra amin'ilay asa
-                        </a>
-                        
-                        <button class="task-complete-btn" id="completeTask1">
-                            <i class="fas fa-check-circle"></i> Vita ny asa
-                        </button>
-                        
-                        <div class="whatsapp-form" id="whatsappForm1">
-                            <div class="form-group">
-                                <label class="form-label">Laharana finday WhatsApp:</label>
-                                <input type="text" class="form-input" id="phone1" placeholder="+261XXXXXXXXX">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Anarana feno:</label>
-                                <input type="text" class="form-input" id="name1" placeholder="Anaranao">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Lien ilay publication:</label>
-                                <input type="text" class="form-input" id="link1" placeholder="https://facebook.com/...">
-                            </div>
-                            
-                            <div class="action-buttons">
-                                <button class="whatsapp-btn" id="sendProof1">
-                                    <i class="fab fa-whatsapp whatsapp-icon"></i> Alefaso amin'ny admin
-                                </button>
-                            </div>
-                            
-                            <div class="proof-status proof-pending" id="proofStatus1" style="display: none;">
-                                <i class="fas fa-clock"></i> Miandry vérification amin'ny admin
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="task-card">
-                        <div class="task-header">
-                            <div class="task-title">Manaraka Instagram</div>
-                            <div class="reward-badge">+50 AR</div>
-                        </div>
-                        <div class="task-description">
-                            Tsindrio ny lien eto ambany, dia manaraka ilay compte Instagram.
-                            Rehefa vita ilay asa, tsindrio ny bokitra "Vita ny asa".
-                        </div>
-                        <a href="https://instagram.com" class="task-complete-btn" target="_blank">
-                            <i class="fab fa-instagram"></i> Iditra amin'ilay asa
-                        </a>
-                        
-                        <button class="task-complete-btn" id="completeTask2">
-                            <i class="fas fa-check-circle"></i> Vita ny asa
-                        </button>
-                        
-                        <div class="whatsapp-form" id="whatsappForm2">
-                            <div class="form-group">
-                                <label class="form-label">Laharana finday WhatsApp:</label>
-                                <input type="text" class="form-input" id="phone2" placeholder="+261XXXXXXXXX">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Anarana feno:</label>
-                                <input type="text" class="form-input" id="name2" placeholder="Anaranao">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Anarana ao amin'ny Instagram:</label>
-                                <input type="text" class="form-input" id="instagramName" placeholder="@anaranao">
-                            </div>
-                            
-                            <div class="action-buttons">
-                                <button class="whatsapp-btn" id="sendProof2">
-                                    <i class="fab fa-whatsapp whatsapp-icon"></i> Alefaso amin'ny admin
-                                </button>
-                            </div>
-                            
-                            <div class="proof-status proof-pending" id="proofStatus2" style="display: none;">
-                                <i class="fas fa-clock"></i> Miandry vérification amin'ny admin
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Interface Admin -->
-            <div class="admin-interface" id="adminInterface">
-                <h2 class="section-title"><i class="fas fa-user-shield"></i> Interface Admin</h2>
-                
-                <div class="admin-container">
-                    <div class="admin-login" id="adminLogin">
-                        <div class="form-group">
-                            <label class="form-label">Teny miafina admin:</label>
-                            <input type="password" class="form-input" id="adminPassword" placeholder="Ampidiro ny teny miafina">
-                        </div>
-                        <button class="admin-confirm-btn" id="adminLoginBtn">
-                            <i class="fas fa-lock"></i> Hiditra
-                        </button>
-                    </div>
-                    
-                    <div class="admin-list" id="adminList" style="display: none;">
-                        <!-- Les preuves seront ajoutées dynamiquement ici -->
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Interface Publisher -->
-            <div class="publisher-interface" id="publisherInterface">
-                <h2 class="section-title"><i class="fas fa-bullhorn"></i> Handefa Publication</h2>
-                
-                <div class="deposit-container">
-                    <div class="deposit-info">
-                        <div class="balance-label">Solde dépôt:</div>
-                        <div class="balance-amount"><span id="depositBalance">0</span> AR</div>
-                        <p>Minimum 5000 AR ny fandraisana anjara</p>
-                    </div>
-                    <button class="deposit-btn" id="depositBtn">
-                        <i class="fas fa-money-bill-wave"></i> Hanampy vola
-                    </button>
-                </div>
-                
-                <div class="publisher-form">
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label class="form-label">Lohateny:</label>
-                                <input type="text" class="form-input" id="pubTitle" placeholder="Lohatenin'ny publication">
-                            </div>
-                        </div>
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label class="form-label">Isan'ny olona ilaina:</label>
-                                <input type="number" class="form-input" id="requiredPeople" min="100" placeholder="100" value="100">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Toriteny:</label>
-                        <textarea class="form-input" id="pubDescription" placeholder="Soraty eto ny toriteny..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Fepetra:</label>
-                        <textarea class="form-input" id="pubConditions" placeholder="Soraty eto ny fepetra..."></textarea>
-                    </div>
-                    
-                    <button class="publish-btn" id="publishBtn" disabled>
-                        <i class="fas fa-paper-plane"></i> Alefa ny publication
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Modal de Retrait -->
-        <div class="modal" id="retraitModal">
-            <div class="modal-content">
-                <span class="close-modal" id="closeModal">&times;</span>
-                <h2 class="modal-title">Fangatahana Retrait</h2>
-                
-                <div class="retrait-form">
-                    <div class="form-group">
-                        <label class="form-label">Laharana finday WhatsApp:</label>
-                        <input type="text" class="form-input" id="retraitPhone" placeholder="+261XXXXXXXXX" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Anarana feno:</label>
-                        <input type="text" class="form-input" id="retraitName" placeholder="Anaranao" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Montant (minimum 1000 AR):</label>
-                        <input type="number" class="form-input" id="retraitAmount" min="1000" placeholder="1000" required>
-                    </div>
-                    
-                    <div class="modal-action-buttons">
-                        <button class="admin-confirm-btn" id="confirmRetrait">
-                            <i class="fas fa-check"></i> Confirmer
-                        </button>
-                        <button class="admin-reject-btn" id="cancelRetrait">
-                            <i class="fas fa-times"></i> Annuler
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Modal de Dépôt -->
-        <div class="modal" id="depositModal">
-            <div class="modal-content">
-                <span class="close-modal" id="closeDepositModal">&times;</span>
-                <h2 class="modal-title">Fampidirana vola</h2>
-                
-                <div class="retrait-form">
-                    <div class="form-group">
-                        <label class="form-label">Laharana finday:</label>
-                        <input type="text" class="form-input" id="depositPhone" placeholder="+261XXXXXXXXX" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Anarana feno:</label>
-                        <input type="text" class="form-input" id="depositName" placeholder="Anaranao" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Montant (minimum 5000 AR):</label>
-                        <input type="number" class="form-input" id="depositAmount" min="5000" placeholder="5000" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Laharana compte Mvola:</label>
-                        <div class="form-input" style="background: #f8f9fa; cursor: pointer;" id="mvolaNumber">
-                            <i class="fas fa-phone"></i> 0323911654
-                        </div>
-                        <small>Tsindrio ny laharana raha te hiantso</small>
-                    </div>
-                    
-                    <div class="proof-status proof-pending" style="margin: 20px 0;">
-                        <i class="fas fa-info-circle"></i> Aorian'ny fandoavam-bola, alefaso eto ny porofo
-                    </div>
-                    
-                    <div class="modal-action-buttons">
-                        <button class="admin-confirm-btn" id="confirmDeposit">
-                            <i class="fas fa-check"></i> Nandefa vola
-                        </button>
-                        <button class="admin-reject-btn" id="cancelDeposit">
-                            <i class="fas fa-times"></i> Hanafoana
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="notification" id="notification">
-            <div class="notification-icon">✅</div>
-            <div id="notificationMessage">Verification réussi! Solde mis à jour.</div>
-        </div>
+    // Firebase configuration (rakitra)
+    const firebaseConfig = {
+      apiKey: "AIzaSyAC-P6WFH1kqfYQi3PdCWpy4LSUqvtX_vo",
+      authDomain: "mila-vola.firebaseapp.com",
+      projectId: "mila-vola",
+      storageBucket: "mila-vola.firebasestorage.app",
+      messagingSenderId: "690624768352",
+      appId: "1:690624768352:web:668994ef2664c5b99dd605",
+      measurementId: "G-C3FZTKQHFP"
+    };
+    // Initialisation Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        <footer>
-            Système Mila Vola &copy; 2025 | Tous droits réservés
-        </footer>
-    </div>
-
-
-    <!-- Firebase + App JS -->
-    <script type="module">
-        // Import Firebase modules
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { 
-            getAuth, 
-            createUserWithEmailAndPassword, 
-            signInWithEmailAndPassword, 
-            onAuthStateChanged, 
-            updateProfile,
-            signOut
-        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-        import { 
-            getFirestore, 
-            doc, 
-            setDoc, 
-            getDoc, 
-            updateDoc, 
-            addDoc, 
-            collection, 
-            deleteDoc, 
-            serverTimestamp, 
-            query, 
-            where,
-            increment
-        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-        
-        // Configuration Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyCK4HqGSjYRT2jFNhAvniSWIzhDvEb2qAQ",
-            authDomain: "asa-en-ligne.firebaseapp.com",
-            projectId: "asa-en-ligne",
-            storageBucket: "asa-en-ligne.appspot.com",
-            messagingSenderId: "58359363245",
-            appId: "1:58359363245:web:ca5969776ce9cd86aef824",
-            measurementId: "G-MRVHVWPV71"
-        };
-        
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        
-        // Références aux collections
-        const usersRef = collection(db, "users");
-        const tasksRef = collection(db, "tasks");
-        const pendingTasksRef = collection(db, "pendingTasks");
-        const pendingDepositsRef = collection(db, "pendingDeposits");
-        const publicationsRef = collection(db, "publications");
-        const referralsRef = collection(db, "referrals");
-        
-        // État de l'application
-        const appState = {
-            currentUser: null,
-            pendingTasks: [],
-            pendingDeposits: [],
-            publications: [],
-            currentInterface: 'user',
-            completedTasks: [],
-            adminPassword: "Rakoto12//"
-        };
-        
-        // Initialisation
-        document.addEventListener('DOMContentLoaded', () => {
-            init();
-        });
-        
-        function init() {
-            // Configurer les événements
-            setupAuthEvents();
-            setupAppEvents();
-            
-            // Observer l'état d'authentification
-            onAuthStateChanged(auth, async (user) => {
-                if (user) {
-                    // Charger les données utilisateur depuis Firestore
-                    const userDoc = await getDoc(doc(db, "users", user.uid));
-                    if (userDoc.exists()) {
-                        loginUser(userDoc.data());
-                    } else {
-                        showNotification("Tsy misy ny kaonty!", false);
-                        signOut(auth);
-                    }
-                } else {
-                    // Afficher le formulaire de connexion
-                    showLogin();
-                }
-            });
-        }
-        
-        function setupAuthEvents() {
-            const switchLink = document.getElementById('switchLink');
-            const submitBtn = document.getElementById('submitBtn');
-            const authTitle = document.getElementById('authTitle');
-            const authSubtitle = document.getElementById('authSubtitle');
-            const switchText = document.getElementById('switchText');
-            const nameField = document.getElementById('nameField');
-            const userTypeField = document.getElementById('userTypeField');
-            const referralField = document.getElementById('referralField');
-            const radioOptions = document.querySelectorAll('.radio-option');
-            
-            // Basculer entre connexion et inscription
-            switchLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                const isLogin = authTitle.textContent === 'Fidirana';
-                
-                if (isLogin) {
-                    // Passer à l'inscription
-                    authTitle.textContent = 'Hisoratra anarana';
-                    authSubtitle.textContent = 'Mamorona kaonty vaovao';
-                    submitBtn.textContent = 'Hisoratra anarana';
-                    switchText.textContent = 'Efa manana kaonty?';
-                    switchLink.textContent = 'Hiditra';
-                    nameField.style.display = 'flex';
-                    userTypeField.style.display = 'block';
-                    referralField.style.display = 'block';
-                } else {
-                    // Passer à la connexion
-                    authTitle.textContent = 'Fidirana';
-                    authSubtitle.textContent = 'Ampidiro ny mailaka sy ny teny miafina';
-                    submitBtn.textContent = 'Hiditra';
-                    switchText.textContent = 'Tsy manana kaonty?';
-                    switchLink.textContent = 'Hisoratra anarana';
-                    nameField.style.display = 'none';
-                    userTypeField.style.display = 'none';
-                    referralField.style.display = 'none';
-                }
-            });
-            
-            // Sélection du type d'utilisateur
-            radioOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    radioOptions.forEach(o => o.classList.remove('selected'));
-                    this.classList.add('selected');
-                });
-            });
-            
-            // Soumission du formulaire
-            submitBtn.addEventListener('click', processAuth);
-        }
-        
-        function setupAppEvents() {
-            // Boutons "Vita ny asa"
-            document.getElementById('completeTask1').addEventListener('click', () => showWhatsappForm('whatsappForm1'));
-            document.getElementById('completeTask2').addEventListener('click', () => showWhatsappForm('whatsappForm2'));
-            
-            // Boutons WhatsApp
-            document.getElementById('sendProof1').addEventListener('click', () => submitProof('task1'));
-            document.getElementById('sendProof2').addEventListener('click', () => submitProof('task2'));
-            
-            // Boutons de retrait
-            document.getElementById('retraitBtn').addEventListener('click', () => {
-                document.getElementById('retraitModal').style.display = 'flex';
-            });
-            
-            document.getElementById('closeModal').addEventListener('click', () => {
-                document.getElementById('retraitModal').style.display = 'none';
-            });
-            
-            document.getElementById('confirmRetrait').addEventListener('click', processRetrait);
-            document.getElementById('cancelRetrait').addEventListener('click', () => {
-                document.getElementById('retraitModal').style.display = 'none';
-            });
-            
-            // Bouton pour changer d'interface
-            document.getElementById('switchBtn').addEventListener('click', toggleInterface);
-            
-            // Bouton de déconnexion
-            document.getElementById('logoutBtn').addEventListener('click', logout);
-            
-            // Bouton de dépôt
-            document.getElementById('depositBtn').addEventListener('click', () => {
-                document.getElementById('depositModal').style.display = 'flex';
-            });
-            
-            // Bouton de dépôt modal
-            document.getElementById('confirmDeposit').addEventListener('click', processDeposit);
-            document.getElementById('closeDepositModal').addEventListener('click', () => {
-                document.getElementById('depositModal').style.display = 'none';
-            });
-            
-            // Appel téléphonique
-            document.getElementById('mvolaNumber').addEventListener('click', function() {
-                window.location.href = 'tel:+261323911654';
-            });
-            
-            // Bouton de publication
-            document.getElementById('publishBtn').addEventListener('click', publishContent);
-            
-            // Vérification admin
-            document.getElementById('adminLoginBtn').addEventListener('click', adminLogin);
-            
-            // Icône de paramètres
-            document.getElementById('userAvatar').addEventListener('click', toggleSettingsMenu);
-            document.getElementById('settingsClose').addEventListener('click', toggleSettingsMenu);
-            
-            // Copier le lien de parrainage
-            document.getElementById('copyReferralBtn').addEventListener('click', copyReferralLink);
-        }
-        
-        async function processAuth() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const isLogin = document.getElementById('authTitle').textContent === 'Fidirana';
-            
-            if (!email || !password) {
-                showNotification("Ampidiro ny mailaka sy ny teny miafina!", false);
-                return;
-            }
-            
-            try {
-                if (isLogin) {
-                    // Connexion avec Firebase Auth
-                    await signInWithEmailAndPassword(auth, email, password);
-                    showNotification("Tafiditra soa aminao!", true);
-                } else {
-                    // Inscription avec Firebase Auth
-                    const fullName = document.getElementById('fullName').value;
-                    const selectedType = document.querySelector('.radio-option.selected');
-                    const referralCode = document.getElementById('referralCode').value;
-                    
-                    if (!fullName) {
-                        showNotification("Ampidiro ny anaranao feno!", false);
-                        return;
-                    }
-                    
-                    if (!selectedType) {
-                        showNotification("Safidio ny karazana mpampiasa!", false);
-                        return;
-                    }
-                    
-                    const userType = selectedType.dataset.type;
-                    
-                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                    const user = userCredential.user;
-                    
-                    // Mettre à jour le profil avec le nom
-                    await updateProfile(user, { displayName: fullName });
-                    
-                    // Générer un code de parrainage
-                    const newReferralCode = generateReferralCode();
-                    
-                    // Créer l'objet utilisateur
-                    const newUser = {
-                        id: user.uid,
-                        name: fullName,
-                        email: email,
-                        type: userType,
-                        balance: 0,
-                        depositBalance: 0,
-                        joined: new Date().toISOString(),
-                        referralCode: newReferralCode,
-                        referredBy: referralCode || null
-                    };
-                    
-                    // Enregistrer dans Firestore
-                    await setDoc(doc(db, "users", user.uid), newUser);
-                    
-                    // Si l'utilisateur a un parrain, enregistrer le filleul
-                    if (referralCode) {
-                        const referrerQuery = query(usersRef, where("referralCode", "==", referralCode));
-                        const referrerSnapshot = await getDocs(referrerQuery);
-                        if (!referrerSnapshot.empty) {
-                            const referrerDoc = referrerSnapshot.docs[0];
-                            const referrerId = referrerDoc.id;
-                            
-                            // Enregistrer la relation de parrainage
-                            await addDoc(referralsRef, {
-                                referrerId: referrerId,
-                                referredId: user.uid,
-                                createdAt: serverTimestamp()
-                            });
-                            
-                            // Créditer le parrain
-                            await updateDoc(doc(db, "users", referrerId), {
-                                balance: increment(50) // Bonus initial
-                            });
-                        }
-                    }
-                    
-                    showNotification("Voaray soa aminao eo amin'ny Mila Vola!", true);
-                }
-            } catch (error) {
-                showNotification("Nisy olana: " + error.message, false);
-                console.error(error);
-            }
-        }
-        
-        async function loginUser(userData) {
-            appState.currentUser = userData;
-            document.getElementById('authContainer').style.display = 'none';
-            document.getElementById('systemContainer').style.display = 'flex';
-            
-            // Mettre à jour l'interface utilisateur
-            document.getElementById('username').textContent = userData.name;
-            document.getElementById('userId').textContent = `ID: ${userData.id}`;
-            document.getElementById('userType').textContent = `Type: ${userData.type === 'jobseeker' ? 'Mitady asa' : 'Mpamorona publication'}`;
-            document.getElementById('userBalance').textContent = userData.balance;
-            document.getElementById('depositBalance').textContent = userData.depositBalance;
-            document.getElementById('referralLink').textContent = `${window.location.origin}?ref=${userData.referralCode}`;
-            
-            // Mettre à jour l'avatar
-            document.getElementById('userAvatar').textContent = userData.name.charAt(0);
-            
-            // Afficher l'interface appropriée
-            if (userData.type === 'publisher') {
-                document.getElementById('userInterface').style.display = 'none';
-                document.getElementById('publisherInterface').style.display = 'flex';
-                document.getElementById('adminInterface').style.display = 'none';
-                document.getElementById('switchBtn').style.display = 'none';
-                
-                // Vérifier le solde de dépôt
-                document.getElementById('publishBtn').disabled = userData.depositBalance < 5000;
-            } else {
-                document.getElementById('userInterface').style.display = 'flex';
-                document.getElementById('publisherInterface').style.display = 'none';
-                document.getElementById('adminInterface').style.display = 'none';
-                document.getElementById('switchBtn').style.display = 'flex';
-            }
-        }
-        
-        async function logout() {
-            try {
-                await signOut(auth);
-                appState.currentUser = null;
-                document.getElementById('systemContainer').style.display = 'none';
-                document.getElementById('authContainer').style.display = 'block';
-                showLogin();
-            } catch (error) {
-                showNotification("Tsy afaka nivoaka: " + error.message, false);
-            }
-        }
-        
-        function showLogin() {
-            document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
-            document.getElementById('fullName').value = '';
-            document.getElementById('referralCode').value = '';
-            document.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
-        }
-        
-        function showWhatsappForm(formId) {
-            const form = document.getElementById(formId);
-            form.style.display = 'block';
-        }
-        
-        async function submitProof(taskId) {
-            let phone, name, proof;
-            
-            if (taskId === 'task1') {
-                phone = document.getElementById('phone1').value;
-                name = document.getElementById('name1').value;
-                proof = document.getElementById('link1').value;
-            } else {
-                phone = document.getElementById('phone2').value;
-                name = document.getElementById('name2').value;
-                proof = document.getElementById('instagramName').value;
-            }
-            
-            if (!phone || !name || !proof) {
-                showNotification("Ampidiro ny angona rehetra!", false);
-                return;
-            }
-            
-            try {
-                // Ajouter la preuve à la liste d'admin
-                const taskTitle = taskId === 'task1' ? "Manao 'J'aime' Facebook" : "Manaraka Instagram";
-                
-                const newProof = {
-                    taskId: taskId,
-                    taskTitle: taskTitle,
-                    userName: name,
-                    userPhone: phone,
-                    userProof: proof,
-                    userId: appState.currentUser.id,
-                    date: new Date().toISOString(),
-                    status: "pending"
-                };
-                
-                await addDoc(pendingTasksRef, newProof);
-                
-                // Mettre à jour le statut
-                const status = document.getElementById(`proofStatus${taskId}`);
-                status.style.display = 'block';
-                
-                // Désactiver le bouton
-                document.getElementById(`sendProof${taskId}`).disabled = true;
-                
-                showNotification("Nalefany tany amin'ny admin ilay porofo. Miandry vérification!", true);
-            } catch (error) {
-                showNotification("Nisy olana: " + error.message, false);
-            }
-        }
-        
-        async function adminLogin() {
-            const password = document.getElementById('adminPassword').value;
-            
-            if (password === appState.adminPassword) {
-                document.getElementById('adminLogin').style.display = 'none';
-                document.getElementById('adminList').style.display = 'block';
-                loadAdminTasks();
-            } else {
-                showNotification("Teny miafina diso!", false);
-            }
-        }
-        
-        async function loadAdminTasks() {
-            const adminList = document.getElementById('adminList');
-            adminList.innerHTML = '';
-            
-            const pendingTasksSnapshot = await getDocs(pendingTasksRef);
-            
-            if (pendingTasksSnapshot.empty) {
-                adminList.innerHTML = `
-                    <div class="no-tasks">
-                        <div class="no-tasks-icon"><i class="fas fa-inbox"></i></div>
-                        <h3>Tsy misy fangatahana</h3>
-                        <p>Tsy misy fangatahana mbola miandry vérification</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            // Afficher les preuves de tâches
-            pendingTasksSnapshot.forEach(proofDoc => {
-                const proof = proofDoc.data();
-                const proofElement = document.createElement('div');
-                proofElement.className = 'admin-item';
-                proofElement.innerHTML = `
-                    <div class="admin-info">
-                        <div class="admin-task-title">${proof.taskTitle}</div>
-                        <div class="admin-user-info">${proof.userName}</div>
-                        <div class="admin-user-info">${proof.userPhone}</div>
-                        <div class="admin-user-info">Porofo: ${proof.userProof}</div>
-                        <div class="admin-date">${new Date(proof.date).toLocaleString()}</div>
-                    </div>
-                    <div class="admin-actions">
-                        <button class="admin-confirm-btn" data-proofid="${proofDoc.id}" data-taskid="${proof.taskId}" data-userid="${proof.userId}">
-                            <i class="fas fa-check"></i> Confirmer
-                        </button>
-                        <button class="admin-reject-btn" data-proofid="${proofDoc.id}">
-                            <i class="fas fa-times"></i> Annuler
-                        </button>
-                    </div>
-                `;
-                adminList.appendChild(proofElement);
-                
-                // Ajouter les événements
-                const confirmBtn = proofElement.querySelector('.admin-confirm-btn');
-                confirmBtn.addEventListener('click', async (e) => {
-                    const proofId = e.target.dataset.proofid;
-                    const taskId = e.target.dataset.taskid;
-                    const userId = e.target.dataset.userid;
-                    await confirmTask(proofId, taskId, userId);
-                });
-                
-                const rejectBtn = proofElement.querySelector('.admin-reject-btn');
-                rejectBtn.addEventListener('click', async (e) => {
-                    const proofId = e.target.dataset.proofid;
-                    await rejectTask(proofId);
-                });
-            });
-        }
-        
-        async function confirmTask(proofId, taskId, userId) {
-            try {
-                // Supprimer la preuve
-                await deleteDoc(doc(db, "pendingTasks", proofId));
-                
-                // Créditer l'utilisateur
-                const reward = 50; // Récompense fixe pour chaque tâche
-                await updateDoc(doc(db, "users", userId), {
-                    balance: increment(reward)
-                });
-                
-                // Mettre à jour le solde dans l'interface
-                if (appState.currentUser && appState.currentUser.id === userId) {
-                    appState.currentUser.balance += reward;
-                    document.getElementById('userBalance').textContent = appState.currentUser.balance;
-                }
-                
-                // Recharger les tâches admin
-                await loadAdminTasks();
-                
-                showNotification("Niampy " + reward + " AR ny solde-nao nandritra ny vérification!", true);
-            } catch (error) {
-                showNotification("Nisy olana: " + error.message, false);
-            }
-        }
-        
-        async function rejectTask(proofId) {
-            try {
-                await deleteDoc(doc(db, "pendingTasks", proofId));
-                await loadAdminTasks();
-                showNotification("Nafoy ilay porofo", true);
-            } catch (error) {
-                showNotification("Nisy olana: " + error.message, false);
-            }
-        }
-        
-        async function processRetrait() {
-            const phone = document.getElementById('retraitPhone').value;
-            const name = document.getElementById('retraitName').value;
-            const amount = parseInt(document.getElementById('retraitAmount').value);
-            
-            if (!phone || !name || !amount) {
-                showNotification("Ampidiro ny angona rehetra!", false);
-                return;
-            }
-            
-            if (amount < 1000) {
-                showNotification("Minimum 1000 AR ny retrait!", false);
-                return;
-            }
-            
-            if (amount > appState.currentUser.balance) {
-                showNotification("Tsy ampy ny vola ao amin'ny kaontinao!", false);
-                return;
-            }
-            
-            try {
-                // Soustraire le montant du solde
-                await updateDoc(doc(db, "users", appState.currentUser.id), {
-                    balance: increment(-amount)
-                });
-                
-                // Fermer le modal
-                document.getElementById('retraitModal').style.display = 'none';
-                
-                // Mettre à jour l'affichage
-                appState.currentUser.balance -= amount;
-                document.getElementById('userBalance').textContent = appState.currentUser.balance;
-                
-                // Afficher la notification
-                showNotification(`Tontosa ny fangatahana retrait ${amount} AR! Ho antsoina amin'ny ${phone} ianao.`, true);
-                
-                // Réinitialiser le formulaire
-                document.getElementById('retraitPhone').value = '';
-                document.getElementById('retraitName').value = '';
-                document.getElementById('retraitAmount').value = '';
-            } catch (error) {
-                showNotification("Nisy olana: " + error.message, false);
-            }
-        }
-        
-        async function processDeposit() {
-            const phone = document.getElementById('depositPhone').value;
-            const name = document.getElementById('depositName').value;
-            const amount = parseInt(document.getElementById('depositAmount').value);
-            
-            if (!phone || !name || !amount) {
-                showNotification("Ampidiro ny angona rehetra!", false);
-                return;
-            }
-            
-            if (amount < 5000) {
-                showNotification("Minimum 5000 AR ny fandraisana anjara!", false);
-                return;
-            }
-            
-            try {
-                // Ajouter le dépôt à la liste d'admin
-                const newDeposit = {
-                    userName: name,
-                    userPhone: phone,
-                    amount: amount,
-                    userId: appState.currentUser.id,
-                    date: new Date().toISOString(),
-                    status: "pending"
-                };
-                
-                await addDoc(pendingDepositsRef, newDeposit);
-                
-                // Fermer le modal
-                document.getElementById('depositModal').style.display = 'none';
-                
-                showNotification("Nalefany tany amin'ny admin ilay fangatahana. Miandry vérification!", true);
-            } catch (error) {
-                showNotification("Nisy olana: " + error.message, false);
-            }
-        }
-        
-        async function publishContent() {
-            const title = document.getElementById('pubTitle').value;
-            const description = document.getElementById('pubDescription').value;
-            const conditions = document.getElementById('pubConditions').value;
-            const requiredPeople = parseInt(document.getElementById('requiredPeople').value);
-            
-            if (!title || !description || !conditions || !requiredPeople) {
-                showNotification("Ampidiro ny angona rehetra!", false);
-                return;
-            }
-            
-            if (appState.currentUser.depositBalance < 5000) {
-                showNotification("Tsy ampy ny vola ao amin'ny kaonty dépôt-nao!", false);
-                return;
-            }
-            
-            try {
-                // Créer la publication
-                const newPublication = {
-                    userId: appState.currentUser.id,
-                    title: title,
-                    description: description,
-                    conditions: conditions,
-                    requiredPeople: requiredPeople,
-                    currentPeople: 0,
-                    status: "active",
-                    createdAt: serverTimestamp()
-                };
-                
-                await addDoc(publicationsRef, newPublication);
-                
-                // Déduire le montant du dépôt
-                await updateDoc(doc(db, "users", appState.currentUser.id), {
-                    depositBalance: increment(-5000)
-                });
-                
-                // Mettre à jour l'affichage
-                appState.currentUser.depositBalance -= 5000;
-                document.getElementById('depositBalance').textContent = appState.currentUser.depositBalance;
-                document.getElementById('publishBtn').disabled = appState.currentUser.depositBalance < 5000;
-                
-                // Réinitialiser le formulaire
-                document.getElementById('pubTitle').value = '';
-                document.getElementById('pubDescription').value = '';
-                document.getElementById('pubConditions').value = '';
-                document.getElementById('requiredPeople').value = '100';
-                
-                showNotification("Voaray soa aminao ny publication-nao! Ho hitan'ny mpampiasa hafa izany.", true);
-            } catch (error) {
-                showNotification("Nisy olana: " + error.message, false);
-            }
-        }
-        
-        function toggleInterface() {
-            if (appState.currentInterface === 'user') {
-                appState.currentInterface = 'admin';
-                document.getElementById('userInterface').style.display = 'none';
-                document.getElementById('adminInterface').style.display = 'flex';
-                document.getElementById('publisherInterface').style.display = 'none';
-                document.getElementById('switchBtn').innerHTML = '<i class="fas fa-user"></i> Mode Utilisateur';
-            } else {
-                appState.currentInterface = 'user';
-                document.getElementById('userInterface').style.display = 'flex';
-                document.getElementById('adminInterface').style.display = 'none';
-                document.getElementById('publisherInterface').style.display = 'none';
-                document.getElementById('switchBtn').innerHTML = '<i class="fas fa-user-shield"></i> Mode Admin';
-            }
+    // Fampiasa hanovana ny pejys hita
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
     }
 
-        function toggleSettingsMenu() {
-            const settingsMenu = document.getElementById('settingsMenu');
-            settingsMenu.classList.toggle('show');
-        }
-        
-        function copyReferralLink() {
-            const referralLink = document.getElementById('referralLink').textContent;
-            navigator.clipboard.writeText(referralLink)
-                .then(() => showNotification("Voacopy ny lien!", true))
-                .catch(err => showNotification("Tsy afaka natao copy: " + err, false));
-        }
-        
-        // Fonction pour générer un code de parrainage
-        function generateReferralCode() {
-            return Math.random().toString(36).substr(2, 8).toUpperCase();
-        }
-        
-        // Afficher une notification
-        function showNotification(message, isSuccess) {
-            const notificationElement = document.getElementById('notification');
-            const notificationMessage = document.getElementById('notificationMessage');
-            notificationMessage.textContent = message;
-            
-            notificationElement.className = `notification ${isSuccess ? 'success-notification' : 'error-notification'}`;
-            notificationElement.classList.add('show');
-            
-            setTimeout(() => {
-                notificationElement.classList.remove('show');
-            }, 5000);
-        }
-    </script>
+    // Fanaraha-maso ny fidirana (Auth State)
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        showSection('home-section');
+        // Avy eo azo atao ny maka ny mombamomba ny mpampiasa (kaonty sns)
+        updateAccountInfo(user.uid);
+      } else {
+        showSection('reg-section');
+      }
+    });
+
+    // ===== Inscription par téléphone =====
+    window.setupPhoneAuth = function() {
+      // Mametraka reCAPTCHA invisible
+      window.recaptchaVerifier = new RecaptchaVerifier('phone-signup-button', {'size': 'invisible'}, auth);
+    }
+    window.sendPhoneCode = function() {
+      const phoneNumber = document.getElementById('phone-input').value;
+      // Mandeha manao SMS code ho an'ny number
+      signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier)
+        .then((confirmationResult) => {
+          window.confirmationResult = confirmationResult;
+          alert('Code de vérification nalefa tamin\'ny SMS!');
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+    window.verifyPhoneCode = async function() {
+      const code = document.getElementById('phone-code').value;
+      try {
+        const result = await window.confirmationResult.confirm(code);
+        const user = result.user;
+        // Manoratra mpampiasa ao Firestore rehefa avy ny verification
+        await setDoc(doc(db, 'users', user.uid), {
+          name: document.getElementById('phone-name').value,
+          phone: user.phoneNumber,
+          email: '',
+          deposit: 0,
+          gains: 0
+        });
+        showSection('home-section');
+      } catch(error) {
+        console.error(error);
+      }
+    }
+
+    // ===== Inscription par email =====
+    window.emailSignUp = async function() {
+      const email = document.getElementById('email-input').value;
+      const name = document.getElementById('email-name').value;
+      const password = document.getElementById('email-password').value;
+      try {
+        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        // Mandefa mail de confirmation
+        await sendEmailVerification(userCred.user);
+        // Manoratra mpampiasa vaovao ao Firestore
+        await setDoc(doc(db, 'users', userCred.user.uid), {
+          name: name,
+          email: email,
+          phone: '',
+          deposit: 0,
+          gains: 0
+        });
+        alert('Mail fanamafisana nalefa. Zahao ny mailakao!');
+      } catch(error) {
+        console.error(error);
+      }
+    }
+
+    // ===== Connexion via Google =====
+    window.googleSignIn = async function() {
+      const provider = new GoogleAuthProvider();
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        // Manoratra na manavao ny mpampiasa ao Firestore
+        await setDoc(doc(db, 'users', user.uid), {
+          name: user.displayName,
+          email: user.email,
+          phone: user.phoneNumber || '',
+          deposit: 0,
+          gains: 0
+        });
+        showSection('home-section');
+      } catch(error) {
+        console.error(error);
+      }
+    }
+
+    // ===== Mampiseho ny kaonty mpampiasa =====
+    async function updateAccountInfo(uid) {
+      const userDoc = await getDoc(doc(db, 'users', uid));
+      if (userDoc.exists()) {
+        const data = userDoc.data();
+        document.getElementById('account-gains').innerText = data.gains + ' Ariary';
+        document.getElementById('account-deposit').innerText = data.deposit + ' Ariary';
+      }
+    }
+
+    // ===== Dépôt sy Retrait =====
+    window.requestDeposit = async function() {
+      const amount = parseInt(document.getElementById('deposit-amount').value);
+      const method = document.getElementById('deposit-method').value;
+      if (amount < 5000) {
+        alert('Minimum dépôt: 5000 Ariary.');
+        return;
+      }
+      // Manoratra fangatahana dépôt ao amin'ny Firestore
+      await addDoc(collection(db, 'deposit_requests'), {
+        userId: auth.currentUser.uid,
+        amount: amount,
+        method: method,
+        status: 'pending'
+      });
+      alert('Demande dépôt nalefa. Miandry confirmation avy amin\'ny admin.');
+    }
+    window.requestWithdraw = async function() {
+      const amount = parseInt(document.getElementById('withdraw-amount').value);
+      const tel = document.getElementById('withdraw-phone').value;
+      const name = document.getElementById('withdraw-name').value;
+      if (amount < 10000) {
+        alert('Montant minimum ho an’ny retrait dia 10000 AR.');
+        return;
+      }
+      // Manoratra fangatahana retrait
+      await addDoc(collection(db, 'withdraw_requests'), {
+        userId: auth.currentUser.uid,
+        amount: amount,
+        phone: tel,
+        name: name,
+        status: 'pending'
+      });
+      alert('Demande retrait nalefa. Miandry confirmation avy amin\'ny admin.');
+    }
+
+    // ===== Publier une tâche =====
+    window.postTask = async function() {
+      const desc = document.getElementById('task-desc').value;
+      const budget = parseInt(document.getElementById('task-budget').value);
+      const instructions = document.getElementById('task-instructions').value;
+      const conditions = document.getElementById('task-conditions').value;
+      if (budget < 50) {
+        alert('Budget/minimum par personne: 50 AR.');
+        return;
+      }
+      // Manoratra asa vaovao ao Firestore
+      await addDoc(collection(db, 'tasks'), {
+        userId: auth.currentUser.uid,
+        description: desc,
+        budget: budget,
+        instructions: instructions,
+        conditions: conditions,
+        participants: []
+      });
+      alert('Tâche nalefa!');
+    }
+
+    // ===== Exemple fandefasana preuve =====
+    window.sendProof = async function(taskId) {
+      // Manao fangatahana preuve (atsangana ary alefa any amin'ny admin)
+      await addDoc(collection(db, 'proofs'), {
+        userId: auth.currentUser.uid,
+        taskId: taskId,
+        status: 'pending'
+      });
+      alert('Preuve nalefa! Miandry confirmation avy amin\'ny admin.');
+    }
+  </script>
+  <style>
+    .section { display: none; margin: 20px; }
+    input, select, textarea { display: block; margin: 5px 0; width: 250px; }
+    button { margin: 5px 0; padding: 5px 10px; }
+  </style>
+</head>
+<body>
+  <!-- Fisoratana anarana -->
+  <div id="reg-section" class="section">
+    <h2>Inscription - Mila Vola</h2>
+    <!-- Par téléphone -->
+    <div>
+      <h3>Par téléphone</h3>
+      <input type="tel" id="phone-input" placeholder="+261 xx xx xx xx">
+      <input type="text" id="phone-name" placeholder="Anarana feno">
+      <input type="password" id="phone-password" placeholder="Teny miafina">
+      <button onclick="setupPhoneAuth(); sendPhoneCode();" id="phone-signup-button">Andefaso code</button>
+      <input type="text" id="phone-code" placeholder="Code SMS">
+      <button onclick="verifyPhoneCode()">Valider code</button>
+    </div>
+    <!-- Par email -->
+    <div>
+      <h3>Par email</h3>
+      <input type="email" id="email-input" placeholder="Email valide">
+      <input type="text" id="email-name" placeholder="Anarana feno">
+      <input type="password" id="email-password" placeholder="Teny miafina">
+      <button onclick="emailSignUp()">S'inscrire</button>
+    </div>
+    <!-- Par Google -->
+    <div>
+      <h3>Connexion Google</h3>
+      <button onclick="googleSignIn()">Google Sign-In</button>
+    </div>
+  </div>
+
+  <!-- Pejy fandraisana / Dashboard -->
+  <div id="home-section" class="section">
+    <h2>Pejy fandraisana - Mila Vola</h2>
+    <!-- Section Compte -->
+    <div>
+      <h3>Compte</h3>
+      <p>Solde Gains: <span id="account-gains">0 Ariary</span></p>
+      <p>Solde Dépôt: <span id="account-deposit">0 Ariary</span></p>
+      <!-- Dépôt -->
+      <h4>Dépôt</h4>
+      <input type="number" id="deposit-amount" placeholder="Montant dépôt (min 5000)">
+      <select id="deposit-method">
+        <option value="mvola">Mvola (0323911654)</option>
+        <option value="orange">Orange Money (0323911654)</option>
+      </select>
+      <button onclick="requestDeposit()">Envoyer dépôt</button>
+      <!-- Retrait -->
+      <h4>Retrait</h4>
+      <input type="number" id="withdraw-amount" placeholder="Montant retrait (min 10000)">
+      <input type="tel" id="withdraw-phone" placeholder="Telma (032...)">
+      <input type="text" id="withdraw-name" placeholder="Anarana feno">
+      <button onclick="requestWithdraw()">Retirer</button>
+    </div>
+
+    <!-- Section Asa (Tasks) -->
+    <div>
+      <h3>Asa azo atao</h3>
+      <div id="tasks-list">
+        <!-- Eto haseho ny lisitry ny tasks avy amin'ny Firestore -->
+        <!-- Ohatra fotsiny: -->
+        <div class="task">
+          <p><strong>Ohatra: Midira ao amin'ny group Facebook</strong></p>
+          <button onclick="sendProof('exampleTaskId')">Envoyer preuve</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Publication -->
+    <div>
+      <h3>Publier une tâche</h3>
+      <textarea id="task-desc" placeholder="Description asa"></textarea>
+      <input type="number" id="task-budget" placeholder="Budget / olona (min 50 AR)">
+      <input type="text" id="task-instructions" placeholder="Torolalana / Lien">
+      <input type="text" id="task-conditions" placeholder="Fepetra takiana (conditions)">
+      <button onclick="postTask()">Envoyer</button>
+    </div>
+
+    <!-- Section Paramètres -->
+    <div>
+      <h3>Paramètres</h3>
+      <p>Rohy referal: <span id="ref-link">https://mila-vola.com/?ref=USER_ID</span></p>
+      <p>Bonus parrainage: 5%</p>
+    </div>
+
+    <!-- Section Admin -->
+    <div>
+      <h3>Section Admin</h3>
+      <div>
+        <h4>Demandes dépôt</h4>
+        <div id="admin-deposits"></div>
+      </div>
+      <div>
+        <h4>Demandes retrait</h4>
+        <div id="admin-withdraws"></div>
+      </div>
+      <div>
+        <h4>Preuves asa</h4>
+        <div id="admin-proofs"></div>
+      </div>
+    </div>
+  </div>
 </body>
-</html>
+    </html>
