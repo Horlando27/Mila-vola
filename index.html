@@ -549,7 +549,7 @@
             }
         });
         
-        // Verify Phone Code
+         // Verify Phone Code
         verifyCodeBtn.addEventListener('click', async () => {
             const code = document.getElementById('code').value;
             
@@ -559,4 +559,125 @@
             }
             
             try {
-                const confirmationRe
+                const confirmationResult = window.confirmationResult;
+                await confirmationResult.confirm(code);
+                
+                // Show success message
+                showSuccessMessage('phone-success');
+                document.getElementById('verification-section').style.display = 'none';
+            } catch (error) {
+                showErrorMessage(`Code incorrect: ${error.message}`);
+            }
+        });
+        
+        // Login
+        loginBtn.addEventListener('click', async () => {
+            const identifier = document.getElementById('login-identifier').value;
+            const password = document.getElementById('login-password').value;
+            
+            if (!identifier || !password) {
+                showErrorMessage('Veuillez remplir tous les champs');
+                return;
+            }
+            
+            try {
+                // Determine if identifier is email or phone
+                let email = identifier;
+                if (identifier.includes('@')) {
+                    // Identifier is email
+                    await signInWithEmailAndPassword(auth, email, password);
+                } else {
+                    // Identifier is phone (for this demo, we'll treat it as email)
+                    // In a real app, you would implement phone login differently
+                    await signInWithEmailAndPassword(auth, email, password);
+                }
+                
+                // Show success message
+                showSuccessMessage('login-success');
+                
+                // Simulate redirection
+                setTimeout(() => {
+                    // In a real app, you would redirect to the dashboard
+                    alert('Redirection vers votre espace personnel...');
+                }, 2000);
+            } catch (error) {
+                showErrorMessage(`Erreur de connexion: ${error.message}`);
+            }
+        });
+        
+        // Forgot Password
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            forgotPasswordSection.style.display = 'block';
+        });
+        
+        // Recovery method toggle
+        recoveryMethod.addEventListener('change', () => {
+            if (recoveryMethod.value === 'email') {
+                emailRecovery.style.display = 'block';
+                phoneRecovery.style.display = 'none';
+            } else {
+                emailRecovery.style.display = 'none';
+                phoneRecovery.style.display = 'block';
+            }
+        });
+        
+        // Send recovery instructions
+        sendRecoveryBtn.addEventListener('click', async () => {
+            if (recoveryMethod.value === 'email') {
+                const email = document.getElementById('recovery-email').value;
+                if (!email) {
+                    showErrorMessage('Veuillez entrer votre adresse email');
+                    return;
+                }
+                
+                try {
+                    await sendPasswordResetEmail(auth, email);
+                    document.getElementById('recovery-success').style.display = 'block';
+                } catch (error) {
+                    showErrorMessage(`Erreur: ${error.message}`);
+                }
+            } else {
+                // Phone recovery
+                const phone = document.getElementById('recovery-phone').value;
+                if (!phone) {
+                    showErrorMessage('Veuillez entrer votre numéro de téléphone');
+                    return;
+                }
+                
+                // In a real app, you would implement phone recovery
+                // For this demo, we'll simulate it
+                document.getElementById('recovery-success').style.display = 'block';
+            }
+        });
+        
+        // Helper functions
+        function showSuccessMessage(id) {
+            // Hide all success messages first
+            document.querySelectorAll('.success-message').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // Show the specific success message
+            document.getElementById(id).style.display = 'block';
+        }
+        
+        function showErrorMessage(message) {
+            // Create a temporary error message
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+            errorDiv.style.display = 'block';
+            
+            // Add to content
+            const content = document.querySelector('.content');
+            content.prepend(errorDiv);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
