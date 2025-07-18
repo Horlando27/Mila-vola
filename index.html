@@ -1,105 +1,562 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Firebase Auth Miasa</title>
-  <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js" type="module"></script>
-  <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js" type="module"></script>
-  <style>
-    body { font-family: Arial; padding: 30px; background: #eef; }
-    input, button { padding: 10px; margin: 5px; }
-    #recaptcha-container { margin-top: 10px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription et Connexion</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: linear-gradient(to right, #4a00e0, #8e2de2);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .tabs {
+            display: flex;
+            background: #f1f1f1;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+        
+        .tab.active {
+            color: #4a00e0;
+            background: white;
+            border-bottom: 3px solid #4a00e0;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4a00e0;
+            box-shadow: 0 0 0 2px rgba(74, 0, 224, 0.1);
+        }
+        
+        .phone-input {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .phone-input select {
+            flex: 0 0 100px;
+        }
+        
+        .phone-input input {
+            flex: 1;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, #4a00e0, #8e2de2);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(to right, #3a00c0, #7e1dd2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-google {
+            background: white;
+            color: #444;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-google:hover {
+            background: #f8f8f8;
+            transform: translateY(-2px);
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+            color: #888;
+        }
+        
+        .divider::before, .divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 42%;
+            height: 1px;
+            background: #ddd;
+        }
+        
+        .divider::before {
+            left: 0;
+        }
+        
+        .divider::after {
+            right: 0;
+        }
+        
+        .forgot-password {
+            text-align: center;
+            margin-top: 20px;
+            color: #4a00e0;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .forgot-password:hover {
+            color: #3a00c0;
+            text-decoration: underline;
+        }
+        
+        .verification-section {
+            display: none;
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #4a00e0;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer a {
+            color: #4a00e0;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .phone-input {
+                flex-direction: column;
+            }
+            
+            .phone-input select {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h2>Inscription & Connexion</h2>
-
-  <!-- Google -->
-  <button id="googleBtn">S'inscrire avec Google</button><br><br>
-
-  <!-- Email -->
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Mot de passe">
-  <button id="emailBtn">S'inscrire avec Email</button><br><br>
-
-  <!-- Téléphone -->
-  <select id="countryCode">
-    <option value="+261">Madagascar (+261)</option>
-    <option value="+33">France (+33)</option>
-    <option value="+1">USA (+1)</option>
-  </select>
-  <input type="text" id="phone" placeholder="Numéro de téléphone">
-  <div id="recaptcha-container"></div>
-  <button id="phoneBtn">Envoyer Code</button><br><br>
-
-  <div id="result"></div>
-
-  <!-- Firebase SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup,
-             createUserWithEmailAndPassword, sendEmailVerification,
-             RecaptchaVerifier, signInWithPhoneNumber }
-      from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-
-    // Config Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyAC-P6WFH1kqfYQi3PdCWpy4LSUqvtX_vo",
-      authDomain: "mila-vola.firebaseapp.com",
-      projectId: "mila-vola",
-      storageBucket: "mila-vola.appspot.com",
-      messagingSenderId: "690624768352",
-      appId: "1:690624768352:web:668994ef2664c5b99dd605",
-      measurementId: "G-C3FZTKQHFP"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    // Google Sign-In
-    document.getElementById("googleBtn").onclick = async () => {
-      const provider = new GoogleAuthProvider();
-      try {
-        const result = await signInWithPopup(auth, provider);
-        document.getElementById("result").innerText = "Google connecté: " + result.user.email;
-      } catch (error) {
-        document.getElementById("result").innerText = "Erreur Google: " + error.message;
-      }
-    };
-
-    // Email Sign-Up
-    document.getElementById("emailBtn").onclick = async () => {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      try {
-        const userCred = await createUserWithEmailAndPassword(auth, email, password);
-        await sendEmailVerification(userCred.user);
-        document.getElementById("result").innerText = "Email vérification envoyé à: " + email;
-      } catch (error) {
-        document.getElementById("result").innerText = "Erreur Email: " + error.message;
-      }
-    };
-
-    // Phone Sign-Up
-    const recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
-      size: 'normal',
-      callback: () => console.log("Recaptcha vérifié"),
-    }, auth);
-    recaptchaVerifier.render();
-
-    document.getElementById("phoneBtn").onclick = async () => {
-      const country = document.getElementById("countryCode").value;
-      const phone = country + document.getElementById("phone").value;
-      try {
-        const confirmationResult = await signInWithPhoneNumber(auth, phone, recaptchaVerifier);
-        const code = prompt("Code de vérification SMS:");
-        const result = await confirmationResult.confirm(code);
-        document.getElementById("result").innerText = "Téléphone vérifié: " + result.user.phoneNumber;
-      } catch (error) {
-        document.getElementById("result").innerText = "Erreur Téléphone: " + error.message;
-      }
-    };
-  </script>
-</body>
-</html>
+    <div class="container">
+        <div class="header">
+            <h1>Créez votre compte</h1>
+            <p>Rejoignez notre communauté dès aujourd'hui</p>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="google">Google</div>
+            <div class="tab" data-tab="email">Email</div>
+            <div class="tab" data-tab="phone">Téléphone</div>
+        </div>
+        
+        <div class="content">
+            <!-- Google Tab -->
+            <div class="tab-content active" id="google-tab">
+                <div class="form-group">
+                    <p>Cliquez sur le bouton ci-dessous pour vous inscrire avec votre compte Google.</p>
+                </div>
+                <button class="btn btn-google" id="google-signup">
+                    <i class="fab fa-google"></i> S'inscrire avec Google
+                </button>
+                <div class="success-message" id="google-success">
+                    <i class="fas fa-check-circle"></i> Un email de vérification a été envoyé à votre adresse. Veuillez vérifier votre boîte de réception.
+                </div>
+            </div>
+            
+            <!-- Email Tab -->
+            <div class="tab-content" id="email-tab">
+                <div class="form-group">
+                    <label for="email">Adresse Email</label>
+                    <input type="email" id="email" placeholder="votre@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" placeholder="Créez un mot de passe sécurisé">
+                </div>
+                <button class="btn btn-primary" id="email-signup">S'inscrire avec Email</button>
+                <div class="success-message" id="email-success">
+                    <i class="fas fa-check-circle"></i> Un email de vérification a été envoyé. Veuillez vérifier votre boîte de réception pour activer votre compte.
+                </div>
+            </div>
+            
+            <!-- Phone Tab -->
+            <div class="tab-content" id="phone-tab">
+                <div class="form-group">
+                    <label for="country">Code Pays</label>
+                    <select id="country">
+                        <option value="+261">Madagascar (+261)</option>
+                        <option value="+33">France (+33)</option>
+                        <option value="+1">États-Unis (+1)</option>
+                        <option value="+44">Royaume-Uni (+44)</option>
+                        <option value="+49">Allemagne (+49)</option>
+                        <option value="+237">Cameroun (+237)</option>
+                        <option value="+225">Côte d'Ivoire (+225)</option>
+                        <option value="+221">Sénégal (+221)</option>
+                        <option value="+243">RD Congo (+243)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Numéro de Téléphone</label>
+                    <div class="phone-input">
+                        <input type="tel" id="phone" placeholder="Votre numéro de téléphone">
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="phone-signup">Envoyer le code</button>
+                
+                <div class="verification-section" id="verification-section">
+                    <div class="form-group">
+                        <label for="code">Code de Vérification</label>
+                        <input type="text" id="code" placeholder="Entrez le code reçu par SMS">
+                    </div>
+                    <button class="btn btn-primary" id="verify-code">Vérifier le code</button>
+                </div>
+                
+                <div class="success-message" id="phone-success">
+                    <i class="fas fa-check-circle"></i> Votre numéro a été vérifié avec succès! Vous pouvez maintenant accéder à votre compte.
+                </div>
+            </div>
+            
+            <div class="divider">OU</div>
+            
+            <!-- Login Section -->
+            <div class="form-group">
+                <label for="login-email">Email ou Téléphone</label>
+                <input type="text" id="login-identifier" placeholder="email@exemple.com ou +261...">
+            </div>
+            <div class="form-group">
+                <label for="login-password">Mot de passe</label>
+                <input type="password" id="login-password" placeholder="Votre mot de passe">
+            </div>
+            <button class="btn btn-primary" id="login-btn">Se connecter</button>
+            
+            <div class="forgot-password" id="forgot-password">
+                Mot de passe oublié ?
+            </div>
+            
+            <div class="success-message" id="login-success">
+                <i class="fas fa-check-circle"></i> Connexion réussie! Redirection vers votre espace...
+            </div>
+            
+            <!-- Forgot Password Modal -->
+            <div class="verification-section" id="forgot-password-section" style="display: none;">
+                <h3 style="margin-bottom: 15px;">Réinitialiser votre mot de passe</h3>
+                <div class="form-group">
+                    <label>Comment souhaitez-vous réinitialiser ?</label>
+                    <select id="recovery-method" class="form-group">
+                        <option value="email">Par Email</option>
+                        <option value="phone">Par Téléphone</option>
+                    </select>
+                </div>
+                
+                <div id="email-recovery">
+                    <div class="form-group">
+                        <label for="recovery-email">Adresse Email</label>
+                        <input type="email" id="recovery-email" placeholder="votre@email.com">
+                    </div>
+                </div>
+                
+                <div id="phone-recovery" style="display: none;">
+                    <div class="form-group">
+                        <label for="recovery-phone">Numéro de Téléphone</label>
+                        <input type="tel" id="recovery-phone" placeholder="Votre numéro de téléphone">
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" id="send-recovery">Envoyer les instructions</button>
+                <div class="success-message" id="recovery-success" style="display: none;">
+                    <i class="fas fa-check-circle"></i> Les instructions de réinitialisation ont été envoyées. Veuillez vérifier votre boîte de réception ou vos SMS.
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Vous avez déjà un compte ? <a href="#" id="switch-to-login">Connectez-vous ici</a></p>
+            <p>En vous inscrivant, vous acceptez nos <a href="#">Conditions d'utilisation</a> et notre <a href="#">Politique de confidentialité</a></p>
+        </div>
+    </div>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword, 
+            signInWithEmailAndPassword, 
+            signInWithPopup, 
+            GoogleAuthProvider,
+            sendEmailVerification,
+            sendPasswordResetEmail,
+            signInWithPhoneNumber,
+            RecaptchaVerifier
+        } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+        
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAC-P6WFH1kqfYQi3PdCWpy4LSUqvtX_vo",
+            authDomain: "mila-vola.firebaseapp.com",
+            projectId: "mila-vola",
+            storageBucket: "mila-vola.appspot.com",
+            messagingSenderId: "690624768352",
+            appId: "1:690624768352:web:668994ef2664c5b99dd605",
+            measurementId: "G-C3FZTKQHFP"
+        };
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+        
+        // DOM Elements
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const googleSignupBtn = document.getElementById('google-signup');
+        const emailSignupBtn = document.getElementById('email-signup');
+        const phoneSignupBtn = document.getElementById('phone-signup');
+        const verifyCodeBtn = document.getElementById('verify-code');
+        const loginBtn = document.getElementById('login-btn');
+        const forgotPasswordLink = document.getElementById('forgot-password');
+        const forgotPasswordSection = document.getElementById('forgot-password-section');
+        const recoveryMethod = document.getElementById('recovery-method');
+        const emailRecovery = document.getElementById('email-recovery');
+        const phoneRecovery = document.getElementById('phone-recovery');
+        const sendRecoveryBtn = document.getElementById('send-recovery');
+        
+        // Tab Switching
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                const tabId = `${tab.dataset.tab}-tab`;
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Google Signup
+        googleSignupBtn.addEventListener('click', async () => {
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                
+                // Send verification email
+                await sendEmailVerification(user);
+                
+                // Show success message
+                showSuccessMessage('google-success');
+            } catch (error) {
+                showErrorMessage(`Erreur: ${error.message}`);
+            }
+        });
+        
+        // Email Signup
+        emailSignupBtn.addEventListener('click', async () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                showErrorMessage('Veuillez remplir tous les champs');
+                return;
+            }
+            
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                // Send verification email
+                await sendEmailVerification(user);
+                
+                // Show success message
+                showSuccessMessage('email-success');
+            } catch (error) {
+                showErrorMessage(`Erreur: ${error.message}`);
+            }
+        });
+        
+        // Phone Signup
+        phoneSignupBtn.addEventListener('click', async () => {
+            const country = document.getElementById('country').value;
+            const phone = document.getElementById('phone').value;
+            const phoneNumber = `${country}${phone}`;
+            
+            if (!phone) {
+                showErrorMessage('Veuillez entrer votre numéro de téléphone');
+                return;
+            }
+            
+            try {
+                // Setup reCAPTCHA
+                window.recaptchaVerifier = new RecaptchaVerifier(auth, 'phone-signup', {
+                    'size': 'invisible',
+                    'callback': () => {
+                        // reCAPTCHA solved, continue with phone sign-in
+                    }
+                });
+                
+                const appVerifier = window.recaptchaVerifier;
+                const confirmation = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
+                
+                // Store confirmation for verification
+                window.confirmationResult = confirmation;
+                
+                // Show verification section
+                document.getElementById('verification-section').style.display = 'block';
+                phoneSignupBtn.disabled = true;
+            } catch (error) {
+                showErrorMessage(`Erreur: ${error.message}`);
+            }
+        });
+        
+        // Verify Phone Code
+        verifyCodeBtn.addEventListener('click', async () => {
+            const code = document.getElementById('code').value;
+            
+            if (!code) {
+                showErrorMessage('Veuillez entrer le code de vérification');
+                return;
+            }
+            
+            try {
+                const confirmationRe
