@@ -553,10 +553,7 @@
         
         // Vérifier si l'utilisateur est déjà connecté
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // Utilisateur déjà connecté, rediriger
-                startRedirect();
-            }
+            // Ne pas rediriger automatiquement - l'utilisateur doit passer par le formulaire
         });
         
         // Tab Switching
