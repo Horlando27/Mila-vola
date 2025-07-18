@@ -1,59 +1,185 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription et Connexion</title>
+    <title>Authentification | ASA en ligne Madagascar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         
         .container {
-            max-width: 900px;
             width: 100%;
+            max-width: 1200px;
+            height: 95vh;
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-radius: 25px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
         
         .header {
-            background: linear-gradient(to right, #4a00e0, #8e2de2);
+            background: linear-gradient(to right, #0d47a1, #1976d2);
             color: white;
             text-align: center;
             padding: 30px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+        
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            z-index: 2;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: #FFD700;
         }
         
         .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.8rem;
+            margin: 20px 0 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
         
         .header p {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .hero {
+            flex: 1;
+            background: linear-gradient(rgba(13, 71, 161, 0.9), rgba(25, 118, 210, 0.8)), 
+                        url('https://images.unsplash.com/photo-1562564055-71a0b9aea146?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+            position: relative;
+        }
+        
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0,0,0,0.7), transparent);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 500px;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        
+        .features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .features li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .features i {
+            margin-right: 10px;
+            color: #FFD700;
+            font-size: 1.2rem;
+        }
+        
+        .auth-section {
+            width: 450px;
+            padding: 40px;
+            overflow-y: auto;
         }
         
         .tabs {
             display: flex;
             background: #f1f1f1;
-            border-bottom: 1px solid #ddd;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
         }
         
         .tab {
@@ -68,13 +194,8 @@
         }
         
         .tab.active {
-            color: #4a00e0;
+            color: #0d47a1;
             background: white;
-            border-bottom: 3px solid #4a00e0;
-        }
-        
-        .content {
-            padding: 30px;
         }
         
         .tab-content {
@@ -92,38 +213,39 @@
         }
         
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 600;
             color: #444;
+            font-size: 1.05rem;
         }
         
         input, select {
             width: 100%;
-            padding: 14px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: border 0.3s ease;
+            padding: 16px 20px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
         }
         
         input:focus, select:focus {
             outline: none;
-            border-color: #4a00e0;
-            box-shadow: 0 0 0 2px rgba(74, 0, 224, 0.1);
+            border-color: #1976d2;
+            box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.15);
         }
         
         .phone-input {
             display: flex;
-            gap: 10px;
+            gap: 15px;
         }
         
         .phone-input select {
-            flex: 0 0 100px;
+            flex: 0 0 120px;
         }
         
         .phone-input input {
@@ -132,48 +254,52 @@
         
         .btn {
             width: 100%;
-            padding: 15px;
+            padding: 17px;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
-            margin: 10px 0;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(to right, #4a00e0, #8e2de2);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: linear-gradient(to right, #3a00c0, #7e1dd2);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn-google {
-            background: white;
-            color: #444;
-            border: 1px solid #ddd;
+            margin: 15px 0;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
         }
         
+        .btn-primary {
+            background: linear-gradient(to right, #0d47a1, #1976d2);
+            color: white;
+            box-shadow: 0 5px 15px rgba(13, 71, 161, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(to right, #0a3a8a, #1565c0);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(13, 71, 161, 0.4);
+        }
+        
+        .btn-google {
+            background: white;
+            color: #444;
+            border: 2px solid #ddd;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
         .btn-google:hover {
             background: #f8f8f8;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         .divider {
             text-align: center;
-            margin: 25px 0;
+            margin: 30px 0;
             position: relative;
-            color: #888;
+            color: #777;
+            font-weight: 500;
         }
         
         .divider::before, .divider::after {
@@ -181,7 +307,7 @@
             position: absolute;
             top: 50%;
             width: 42%;
-            height: 1px;
+            height: 2px;
             background: #ddd;
         }
         
@@ -196,73 +322,96 @@
         .forgot-password {
             text-align: center;
             margin-top: 20px;
-            color: #4a00e0;
+            color: #1976d2;
             font-weight: 600;
             cursor: pointer;
             transition: color 0.3s ease;
+            font-size: 1.05rem;
         }
         
         .forgot-password:hover {
-            color: #3a00c0;
+            color: #0d47a1;
             text-decoration: underline;
         }
         
         .verification-section {
             display: none;
-            background: #f0f8ff;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            border-left: 4px solid #4a00e0;
+            background: #e3f2fd;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 25px;
+            border-left: 5px solid #1976d2;
+        }
+        
+        .message {
+            padding: 18px;
+            border-radius: 12px;
+            margin: 20px 0;
+            display: none;
+            font-size: 1.05rem;
         }
         
         .success-message {
             background: #d4edda;
             color: #155724;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            display: none;
+            border-left: 5px solid #28a745;
         }
         
         .error-message {
             background: #f8d7da;
             color: #721c24;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            display: none;
+            border-left: 5px solid #dc3545;
         }
         
         .footer {
             text-align: center;
-            padding: 20px;
+            padding: 25px;
             color: #666;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             border-top: 1px solid #eee;
+            background: #f9f9f9;
         }
         
         .footer a {
-            color: #4a00e0;
+            color: #1976d2;
             text-decoration: none;
             font-weight: 600;
+            transition: color 0.3s ease;
         }
         
         .footer a:hover {
+            color: #0d47a1;
             text-decoration: underline;
         }
         
-        @media (max-width: 768px) {
+        .country-flag {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 900px) {
+            .hero {
+                display: none;
+            }
+            
+            .auth-section {
+                width: 100%;
+            }
+            
             .container {
-                border-radius: 15px;
+                height: auto;
+                min-height: 100vh;
             }
-            
+        }
+        
+        @media (max-width: 600px) {
             .header h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
+                margin-top: 40px;
             }
             
-            .tabs {
-                flex-direction: column;
+            .auth-section {
+                padding: 25px;
             }
             
             .phone-input {
@@ -273,146 +422,76 @@
                 width: 100%;
             }
         }
+        
+        /* Animation de chargement */
+        .loader {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(25, 118, 210, 0.2);
+            border-top: 5px solid #1976d2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Animation de redirection */
+        .redirect-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        
+        .redirect-animation.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .redirect-animation h2 {
+            font-size: 2.5rem;
+            color: #0d47a1;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .progress-bar {
+            width: 80%;
+            max-width: 400px;
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #1976d2, #0d47a1);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
     </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Créez votre compte</h1>
-            <p>Rejoignez notre communauté dès aujourd'hui</p>
-        </div>
-        
-        <div class="tabs">
-            <div class="tab active" data-tab="google">Google</div>
-            <div class="tab" data-tab="email">Email</div>
-            <div class="tab" data-tab="phone">Téléphone</div>
-        </div>
-        
-        <div class="content">
-            <!-- Google Tab -->
-            <div class="tab-content active" id="google-tab">
-                <div class="form-group">
-                    <p>Cliquez sur le bouton ci-dessous pour vous inscrire avec votre compte Google.</p>
-                </div>
-                <button class="btn btn-google" id="google-signup">
-                    <i class="fab fa-google"></i> S'inscrire avec Google
-                </button>
-                <div class="success-message" id="google-success">
-                    <i class="fas fa-check-circle"></i> Un email de vérification a été envoyé à votre adresse. Veuillez vérifier votre boîte de réception.
-                </div>
-            </div>
-            
-            <!-- Email Tab -->
-            <div class="tab-content" id="email-tab">
-                <div class="form-group">
-                    <label for="email">Adresse Email</label>
-                    <input type="email" id="email" placeholder="votre@email.com">
-                </div>
-                <div class="form-group">
-                    <label for="password">Mot de passe</label>
-                    <input type="password" id="password" placeholder="Créez un mot de passe sécurisé">
-                </div>
-                <button class="btn btn-primary" id="email-signup">S'inscrire avec Email</button>
-                <div class="success-message" id="email-success">
-                    <i class="fas fa-check-circle"></i> Un email de vérification a été envoyé. Veuillez vérifier votre boîte de réception pour activer votre compte.
-                </div>
-            </div>
-            
-            <!-- Phone Tab -->
-            <div class="tab-content" id="phone-tab">
-                <div class="form-group">
-                    <label for="country">Code Pays</label>
-                    <select id="country">
-                        <option value="+261">Madagascar (+261)</option>
-                        <option value="+33">France (+33)</option>
-                        <option value="+1">États-Unis (+1)</option>
-                        <option value="+44">Royaume-Uni (+44)</option>
-                        <option value="+49">Allemagne (+49)</option>
-                        <option value="+237">Cameroun (+237)</option>
-                        <option value="+225">Côte d'Ivoire (+225)</option>
-                        <option value="+221">Sénégal (+221)</option>
-                        <option value="+243">RD Congo (+243)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Numéro de Téléphone</label>
-                    <div class="phone-input">
-                        <input type="tel" id="phone" placeholder="Votre numéro de téléphone">
-                    </div>
-                </div>
-                <button class="btn btn-primary" id="phone-signup">Envoyer le code</button>
-                
-                <div class="verification-section" id="verification-section">
-                    <div class="form-group">
-                        <label for="code">Code de Vérification</label>
-                        <input type="text" id="code" placeholder="Entrez le code reçu par SMS">
-                    </div>
-                    <button class="btn btn-primary" id="verify-code">Vérifier le code</button>
-                </div>
-                
-                <div class="success-message" id="phone-success">
-                    <i class="fas fa-check-circle"></i> Votre numéro a été vérifié avec succès! Vous pouvez maintenant accéder à votre compte.
-                </div>
-            </div>
-            
-            <div class="divider">OU</div>
-            
-            <!-- Login Section -->
-            <div class="form-group">
-                <label for="login-email">Email ou Téléphone</label>
-                <input type="text" id="login-identifier" placeholder="email@exemple.com ou +261...">
-            </div>
-            <div class="form-group">
-                <label for="login-password">Mot de passe</label>
-                <input type="password" id="login-password" placeholder="Votre mot de passe">
-            </div>
-            <button class="btn btn-primary" id="login-btn">Se connecter</button>
-            
-            <div class="forgot-password" id="forgot-password">
-                Mot de passe oublié ?
-            </div>
-            
-            <div class="success-message" id="login-success">
-                <i class="fas fa-check-circle"></i> Connexion réussie! Redirection vers votre espace...
-            </div>
-            
-            <!-- Forgot Password Modal -->
-            <div class="verification-section" id="forgot-password-section" style="display: none;">
-                <h3 style="margin-bottom: 15px;">Réinitialiser votre mot de passe</h3>
-                <div class="form-group">
-                    <label>Comment souhaitez-vous réinitialiser ?</label>
-                    <select id="recovery-method" class="form-group">
-                        <option value="email">Par Email</option>
-                        <option value="phone">Par Téléphone</option>
-                    </select>
-                </div>
-                
-                <div id="email-recovery">
-                    <div class="form-group">
-                        <label for="recovery-email">Adresse Email</label>
-                        <input type="email" id="recovery-email" placeholder="votre@email.com">
-                    </div>
-                </div>
-                
-                <div id="phone-recovery" style="display: none;">
-                    <div class="form-group">
-                        <label for="recovery-phone">Numéro de Téléphone</label>
-                        <input type="tel" id="recovery-phone" placeholder="Votre numéro de téléphone">
-                    </div>
-                </div>
-                
-                <button class="btn btn-primary" id="send-recovery">Envoyer les instructions</button>
-                <div class="success-message" id="recovery-success" style="display: none;">
-                    <i class="fas fa-check-circle"></i> Les instructions de réinitialisation ont été envoyées. Veuillez vérifier votre boîte de réception ou vos SMS.
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer">
-            <p>Vous avez déjà un compte ? <a href="#" id="switch-to-login">Connectez-vous ici</a></p>
-            <p>En vous inscrivant, vous acceptez nos <a href="#">Conditions d'utilisation</a> et notre <a href="#">Politique de confidentialité</a></p>
-        </div>
-    </div>
     
     <!-- Firebase SDK -->
     <script type="module">
@@ -427,7 +506,8 @@
             sendEmailVerification,
             sendPasswordResetEmail,
             signInWithPhoneNumber,
-            RecaptchaVerifier
+            RecaptchaVerifier,
+            onAuthStateChanged
         } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
         
         // Firebase configuration
@@ -449,9 +529,10 @@
         // DOM Elements
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
-        const googleSignupBtn = document.getElementById('google-signup');
-        const emailSignupBtn = document.getElementById('email-signup');
-        const phoneSignupBtn = document.getElementById('phone-signup');
+        const googleLoginBtn = document.getElementById('google-login');
+        const googleSignupBtn = document.getElementById('google-signup-btn');
+        const emailSignupBtn = document.getElementById('email-signup-btn');
+        const phoneSignupBtn = document.getElementById('phone-signup-btn');
         const verifyCodeBtn = document.getElementById('verify-code');
         const loginBtn = document.getElementById('login-btn');
         const forgotPasswordLink = document.getElementById('forgot-password');
@@ -460,79 +541,145 @@
         const emailRecovery = document.getElementById('email-recovery');
         const phoneRecovery = document.getElementById('phone-recovery');
         const sendRecoveryBtn = document.getElementById('send-recovery');
+        const redirectAnimation = document.getElementById('redirect-animation');
+        const redirectProgress = document.getElementById('redirect-progress');
+        const loginLoader = document.getElementById('login-loader');
+        const signupLoader = document.getElementById('signup-loader');
+        const loginSuccess = document.getElementById('login-success');
+        const loginError = document.getElementById('login-error');
+        const signupSuccess = document.getElementById('signup-success');
+        const signupError = document.getElementById('signup-error');
+        const recoverySuccess = document.getElementById('recovery-success');
+        
+        // Vérifier si l'utilisateur est déjà connecté
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Utilisateur déjà connecté, rediriger
+                startRedirect();
+            }
+        });
         
         // Tab Switching
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
-                // Remove active class from all tabs
-                tabs.forEach(t => t.classList.remove('active'));
-                tabContents.forEach(c => c.classList.remove('active'));
-                
-                // Add active class to clicked tab
-                tab.classList.add('active');
-                const tabId = `${tab.dataset.tab}-tab`;
-                document.getElementById(tabId).classList.add('active');
+                // Onglets de connexion/inscription
+                if(tab.dataset.tab) {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+                } 
+                // Onglets de méthode d'inscription
+                else if(tab.dataset.signup) {
+                    const signupTabs = document.querySelectorAll('[data-signup]');
+                    const signupMethods = document.querySelectorAll('.signup-method');
+                    
+                    signupTabs.forEach(t => t.classList.remove('active'));
+                    signupMethods.forEach(m => m.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    document.getElementById(`${tab.dataset.signup}-signup`).classList.add('active');
+                }
             });
         });
         
-        // Google Signup
-        googleSignupBtn.addEventListener('click', async () => {
+        // Google Signup/Login
+        const handleGoogleAuth = async (isSignup = false) => {
             try {
                 const result = await signInWithPopup(auth, provider);
                 const user = result.user;
                 
-                // Send verification email
-                await sendEmailVerification(user);
+                if (isSignup) {
+                    await sendEmailVerification(user);
+                    signupSuccess.style.display = 'block';
+                    
+                    // Basculer vers l'onglet de connexion après 3 secondes
+                    setTimeout(() => {
+                        document.querySelector('[data-tab="login"]').click();
+                    }, 3000);
+                }
                 
-                // Show success message
-                showSuccessMessage('google-success');
+                startRedirect();
             } catch (error) {
-                showErrorMessage(`Erreur: ${error.message}`);
+                showErrorMessage(`Erreur: ${error.message}`, isSignup ? 'signup' : 'login');
             }
-        });
+        };
+        
+        googleLoginBtn.addEventListener('click', () => handleGoogleAuth(false));
+        googleSignupBtn.addEventListener('click', () => handleGoogleAuth(true));
         
         // Email Signup
         emailSignupBtn.addEventListener('click', async () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const confirm = document.getElementById('signup-confirm').value;
             
-            if (!email || !password) {
-                showErrorMessage('Veuillez remplir tous les champs');
+            if (!name || !email || !password || !confirm) {
+                showErrorMessage('Veuillez remplir tous les champs', 'signup');
                 return;
             }
+            
+            if (password !== confirm) {
+                showErrorMessage('Les mots de passe ne correspondent pas', 'signup');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showErrorMessage('Le mot de passe doit contenir au moins 6 caractères', 'signup');
+                return;
+            }
+            
+            // Afficher le loader
+            signupLoader.style.display = 'block';
+            signupSuccess.style.display = 'none';
+            signupError.style.display = 'none';
             
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
                 
-                // Send verification email
+                // Envoyer l'email de vérification
                 await sendEmailVerification(user);
                 
-                // Show success message
-                showSuccessMessage('email-success');
+                // Afficher le succès
+                signupLoader.style.display = 'none';
+                signupSuccess.style.display = 'block';
+                
+                // Réinitialiser le formulaire
+                document.getElementById('signup-name').value = '';
+                document.getElementById('signup-email').value = '';
+                document.getElementById('signup-password').value = '';
+                document.getElementById('signup-confirm').value = '';
+                
+                // Basculer vers l'onglet de connexion après 3 secondes
+                setTimeout(() => {
+                    document.querySelector('[data-tab="login"]').click();
+                }, 3000);
             } catch (error) {
-                showErrorMessage(`Erreur: ${error.message}`);
+                signupLoader.style.display = 'none';
+                showErrorMessage(`Erreur: ${error.message}`, 'signup');
             }
         });
         
         // Phone Signup
         phoneSignupBtn.addEventListener('click', async () => {
+            const name = document.getElementById('signup-name-phone').value;
             const country = document.getElementById('country').value;
             const phone = document.getElementById('phone').value;
             const phoneNumber = `${country}${phone}`;
             
-            if (!phone) {
-                showErrorMessage('Veuillez entrer votre numéro de téléphone');
+            if (!name || !phone) {
+                showErrorMessage('Veuillez remplir tous les champs', 'signup');
                 return;
             }
             
             try {
                 // Setup reCAPTCHA
-                window.recaptchaVerifier = new RecaptchaVerifier(auth, 'phone-signup', {
+                window.recaptchaVerifier = new RecaptchaVerifier(auth, 'phone-signup-btn', {
                     'size': 'invisible',
-                    'callback': () => {
-                        // reCAPTCHA solved, continue with phone sign-in
-                    }
+                    'callback': () => {}
                 });
                 
                 const appVerifier = window.recaptchaVerifier;
@@ -545,16 +692,16 @@
                 document.getElementById('verification-section').style.display = 'block';
                 phoneSignupBtn.disabled = true;
             } catch (error) {
-                showErrorMessage(`Erreur: ${error.message}`);
+                showErrorMessage(`Erreur: ${error.message}`, 'signup');
             }
         });
         
-         // Verify Phone Code
+        // Verify Phone Code
         verifyCodeBtn.addEventListener('click', async () => {
             const code = document.getElementById('code').value;
             
             if (!code) {
-                showErrorMessage('Veuillez entrer le code de vérification');
+                showErrorMessage('Veuillez entrer le code de vérification', 'signup');
                 return;
             }
             
@@ -563,14 +710,22 @@
                 await confirmationResult.confirm(code);
                 
                 // Show success message
-                showSuccessMessage('phone-success');
+                signupSuccess.style.display = 'block';
                 document.getElementById('verification-section').style.display = 'none';
+                
+                // Réinitialiser le formulaire
+                document.getElementById('signup-name-phone').value = '';
+                document.getElementById('phone').value = '';
+                document.getElementById('code').value = '';
+                
+                // Rediriger après inscription
+                startRedirect();
             } catch (error) {
-                showErrorMessage(`Code incorrect: ${error.message}`);
+                showErrorMessage(`Code incorrect: ${error.message}`, 'signup');
             }
         });
         
-        // Login
+        // Login with Email/Password
         loginBtn.addEventListener('click', async () => {
             const identifier = document.getElementById('login-identifier').value;
             const password = document.getElementById('login-password').value;
@@ -580,32 +735,28 @@
                 return;
             }
             
+            // Afficher le loader
+            loginLoader.style.display = 'block';
+            loginSuccess.style.display = 'none';
+            loginError.style.display = 'none';
+            
             try {
-                // Determine if identifier is email or phone
-                let email = identifier;
-                if (identifier.includes('@')) {
-                    // Identifier is email
-                    await signInWithEmailAndPassword(auth, email, password);
-                } else {
-                    // Identifier is phone (for this demo, we'll treat it as email)
-                    // In a real app, you would implement phone login differently
-                    await signInWithEmailAndPassword(auth, email, password);
-                }
+                // Tenter la connexion avec email
+                await signInWithEmailAndPassword(auth, identifier, password);
                 
-                // Show success message
-                showSuccessMessage('login-success');
+                // Connexion réussie
+                loginLoader.style.display = 'none';
+                loginSuccess.style.display = 'block';
                 
-                // Simulate redirection
-                setTimeout(() => {
-                    // In a real app, you would redirect to the dashboard
-                    alert('Redirection vers votre espace personnel...');
-                }, 2000);
+                // Rediriger
+                startRedirect();
             } catch (error) {
+                loginLoader.style.display = 'none';
                 showErrorMessage(`Erreur de connexion: ${error.message}`);
             }
         });
         
-        // Forgot Password
+        // Mot de passe oublié
         forgotPasswordLink.addEventListener('click', (e) => {
             e.preventDefault();
             forgotPasswordSection.style.display = 'block';
@@ -633,51 +784,316 @@
                 
                 try {
                     await sendPasswordResetEmail(auth, email);
-                    document.getElementById('recovery-success').style.display = 'block';
+                    recoverySuccess.style.display = 'block';
+                    
+                    // Cacher après 5 secondes
+                    setTimeout(() => {
+                        recoverySuccess.style.display = 'none';
+                        forgotPasswordSection.style.display = 'none';
+                    }, 5000);
                 } catch (error) {
                     showErrorMessage(`Erreur: ${error.message}`);
                 }
             } else {
-                // Phone recovery
+                // Phone recovery (non implémenté dans Firebase)
                 const phone = document.getElementById('recovery-phone').value;
                 if (!phone) {
                     showErrorMessage('Veuillez entrer votre numéro de téléphone');
                     return;
                 }
                 
-                // In a real app, you would implement phone recovery
-                // For this demo, we'll simulate it
-                document.getElementById('recovery-success').style.display = 'block';
+                // Simuler l'envoi
+                recoverySuccess.style.display = 'block';
+                
+                // Cacher après 5 secondes
+                setTimeout(() => {
+                    recoverySuccess.style.display = 'none';
+                    forgotPasswordSection.style.display = 'none';
+                }, 5000);
             }
         });
         
-        // Helper functions
-        function showSuccessMessage(id) {
-            // Hide all success messages first
-            document.querySelectorAll('.success-message').forEach(el => {
-                el.style.display = 'none';
-            });
+        // Fonction de redirection
+        function startRedirect() {
+            // Afficher l'animation de redirection
+            redirectAnimation.classList.add('active');
             
-            // Show the specific success message
-            document.getElementById(id).style.display = 'block';
+            // Simuler une barre de progression
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 2;
+                redirectProgress.style.width = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    // Redirection vers le site
+                    window.location.href = 'https://site-web-asa-en-ligne-mada.vercel.app/#';
+                }
+            }, 50);
         }
         
-        function showErrorMessage(message) {
-            // Create a temporary error message
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'error-message';
-            errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
-            errorDiv.style.display = 'block';
-            
-            // Add to content
-            const content = document.querySelector('.content');
-            content.prepend(errorDiv);
-            
-            // Remove after 5 seconds
-            setTimeout(() => {
-                errorDiv.remove();
-            }, 5000);
+        // Helper functions
+        function showErrorMessage(message, type = 'login') {
+            if (type === 'login') {
+                document.getElementById('error-text').textContent = message;
+                loginError.style.display = 'block';
+                
+                // Cacher après 5 secondes
+                setTimeout(() => {
+                    loginError.style.display = 'none';
+                }, 5000);
+            } else {
+                document.getElementById('signup-error-text').textContent = message;
+                signupError.style.display = 'block';
+                
+                // Cacher après 5 secondes
+                setTimeout(() => {
+                    signupError.style.display = 'none';
+                }, 5000);
+            }
         }
+        
+        // Initialisation de la page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialiser la section de vérification téléphonique
+            document.getElementById('verification-section').style.display = 'none';
+            
+            // Afficher un message de bienvenue
+            setTimeout(() => {
+                const welcomeMessage = document.createElement('div');
+                welcomeMessage.className = 'success-message message';
+                welcomeMessage.innerHTML = '<i class="fas fa-info-circle"></i> Bienvenue! Veuillez vous connecter ou créer un compte.';
+                welcomeMessage.style.display = 'block';
+                document.querySelector('.auth-section').prepend(welcomeMessage);
+                
+                setTimeout(() => {
+                    welcomeMessage.style.display = 'none';
+                }, 5000);
+            }, 1000);
+        });
     </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-globe-africa"></i>
+                ASA-Mada
+            </div>
+            <h1>Authentification</h1>
+            <p>Accédez à votre espace personnel ou créez un nouveau compte</p>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="hero">
+                <div class="hero-content">
+                    <h2>ASA en ligne Madagascar</h2>
+                    <p>Plateforme de services financiers pour tous les Malagasy. Accédez à vos comptes, effectuez des transactions et bénéficiez de services bancaires innovants.</p>
+                    
+                    <ul class="features">
+                        <li><i class="fas fa-check-circle"></i> Transactions sécurisées et instantanées</li>
+                        <li><i class="fas fa-check-circle"></i> Gestion de comptes simplifiée</li>
+                        <li><i class="fas fa-check-circle"></i> Support client 24/7</li>
+                        <li><i class="fas fa-check-circle"></i> Services adaptés à tous vos besoins</li>
+                    </ul>
+                    
+                    <button class="btn btn-primary">
+                        <i class="fas fa-info-circle"></i> En savoir plus
+                    </button>
+                </div>
+            </div>
+            
+            <div class="auth-section">
+                <div class="tabs">
+                    <div class="tab active" data-tab="login">Connexion</div>
+                    <div class="tab" data-tab="signup">Inscription</div>
+                </div>
+                
+                <!-- Connexion -->
+                <div class="tab-content active" id="login-tab">
+                    <div class="form-group">
+                        <label for="login-identifier">Email ou Téléphone</label>
+                        <input type="text" id="login-identifier" placeholder="email@exemple.com ou +261...">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Mot de passe</label>
+                        <input type="password" id="login-password" placeholder="Votre mot de passe">
+                    </div>
+                    
+                    <button class="btn btn-primary" id="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> Se connecter
+                    </button>
+                    
+                    <div class="loader" id="login-loader">
+                        <div class="loader-spinner"></div>
+                        <p>Connexion en cours...</p>
+                    </div>
+                    
+                    <div class="divider">OU</div>
+                    
+                    <button class="btn btn-google" id="google-login">
+                        <i class="fab fa-google"></i> Continuer avec Google
+                    </button>
+                    
+                    <div class="forgot-password" id="forgot-password">
+                        <i class="fas fa-key"></i> Mot de passe oublié ?
+                    </div>
+                    
+                    <div class="success-message message" id="login-success">
+                        <i class="fas fa-check-circle"></i> Connexion réussie! Redirection vers votre espace...
+                    </div>
+                    
+                    <div class="error-message message" id="login-error">
+                        <i class="fas fa-exclamation-circle"></i> <span id="error-text">Identifiants incorrects. Veuillez réessayer.</span>
+                    </div>
+                </div>
+                
+                <!-- Inscription -->
+                <div class="tab-content" id="signup-tab">
+                    <div class="tabs">
+                        <div class="tab active" data-signup="email">Email</div>
+                        <div class="tab" data-signup="phone">Téléphone</div>
+                        <div class="tab" data-signup="google">Google</div>
+                    </div>
+                    
+                    <!-- Inscription Email -->
+                    <div class="signup-method active" id="email-signup">
+                        <div class="form-group">
+                            <label for="signup-name">Nom Complet</label>
+                            <input type="text" id="signup-name" placeholder="Votre nom complet">
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-email">Adresse Email</label>
+                            <input type="email" id="signup-email" placeholder="votre@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-password">Mot de passe</label>
+                            <input type="password" id="signup-password" placeholder="Créez un mot de passe sécurisé">
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-confirm">Confirmez le mot de passe</label>
+                            <input type="password" id="signup-confirm" placeholder="Répétez votre mot de passe">
+                        </div>
+                        
+                        <button class="btn btn-primary" id="email-signup-btn">
+                            <i class="fas fa-user-plus"></i> Créer un compte
+                        </button>
+                        
+                        <div class="loader" id="signup-loader">
+                            <div class="loader-spinner"></div>
+                            <p>Création du compte en cours...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Inscription Téléphone -->
+                    <div class="signup-method" id="phone-signup">
+                        <div class="form-group">
+                            <label for="signup-name-phone">Nom Complet</label>
+                            <input type="text" id="signup-name-phone" placeholder="Votre nom complet">
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Code Pays</label>
+                            <select id="country">
+                                <option value="+261">🇲🇬 Madagascar (+261)</option>
+                                <option value="+33">🇫🇷 France (+33)</option>
+                                <option value="+1">🇺🇸 États-Unis (+1)</option>
+                                <option value="+44">🇬🇧 Royaume-Uni (+44)</option>
+                                <option value="+237">🇨🇲 Cameroun (+237)</option>
+                                <option value="+225">🇨🇮 Côte d'Ivoire (+225)</option>
+                                <option value="+221">🇸🇳 Sénégal (+221)</option>
+                                <option value="+243">🇨🇩 RD Congo (+243)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Numéro de Téléphone</label>
+                            <div class="phone-input">
+                                <input type="tel" id="phone" placeholder="Votre numéro de téléphone">
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary" id="phone-signup-btn">
+                            <i class="fas fa-mobile-alt"></i> Envoyer le code
+                        </button>
+                        
+                        <div class="verification-section" id="verification-section">
+                            <div class="form-group">
+                                <label for="code">Code de Vérification</label>
+                                <input type="text" id="code" placeholder="Entrez le code reçu par SMS">
+                            </div>
+                            <button class="btn btn-primary" id="verify-code">
+                                <i class="fas fa-check-circle"></i> Vérifier le code
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Inscription Google -->
+                    <div class="signup-method" id="google-signup">
+                        <div class="form-group">
+                            <p>Cliquez sur le bouton ci-dessous pour vous inscrire avec votre compte Google.</p>
+                        </div>
+                        <button class="btn btn-google" id="google-signup-btn">
+                            <i class="fab fa-google"></i> S'inscrire avec Google
+                        </button>
+                    </div>
+                    
+                    <div class="success-message message" id="signup-success">
+                        <i class="fas fa-check-circle"></i> Inscription réussie! Un email de vérification a été envoyé.
+                    </div>
+                    
+                    <div class="error-message message" id="signup-error">
+                        <i class="fas fa-exclamation-circle"></i> <span id="signup-error-text">Une erreur s'est produite. Veuillez réessayer.</span>
+                    </div>
+                </div>
+                
+                <!-- Mot de passe oublié -->
+                <div class="verification-section" id="forgot-password-section" style="display: none;">
+                    <h3 style="margin-bottom: 20px; color: #0d47a1;"><i class="fas fa-key"></i> Réinitialiser votre mot de passe</h3>
+                    <div class="form-group">
+                        <label>Comment souhaitez-vous réinitialiser ?</label>
+                        <select id="recovery-method" class="form-group">
+                            <option value="email">Par Email</option>
+                            <option value="phone">Par Téléphone</option>
+                        </select>
+                    </div>
+                    
+                    <div id="email-recovery">
+                        <div class="form-group">
+                            <label for="recovery-email">Adresse Email</label>
+                            <input type="email" id="recovery-email" placeholder="votre@email.com">
+                        </div>
+                    </div>
+                    
+                    <div id="phone-recovery" style="display: none;">
+                        <div class="form-group">
+                            <label for="recovery-phone">Numéro de Téléphone</label>
+                            <input type="tel" id="recovery-phone" placeholder="Votre numéro de téléphone">
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" id="send-recovery">
+                        <i class="fas fa-paper-plane"></i> Envoyer les instructions
+                    </button>
+                    <div class="success-message message" id="recovery-success" style="display: none;">
+                        <i class="fas fa-check-circle"></i> Les instructions de réinitialisation ont été envoyées.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>En utilisant ce service, vous acceptez nos <a href="#">Conditions d'utilisation</a> et notre <a href="#">Politique de confidentialité</a></p>
+            <p>&copy; 2023 ASA en ligne Madagascar. Tous droits réservés.</p>
+        </div>
+    </div>
+    
+    <!-- Animation de redirection -->
+    <div class="redirect-animation" id="redirect-animation">
+        <h2>Connexion réussie!</h2>
+        <p>Vous allez être redirigé vers ASA en ligne Madagascar...</p>
+        <div class="loader-spinner"></div>
+        <div class="progress-bar">
+            <div class="progress" id="redirect-progress"></div>
+        </div>
+    </div>
 </body>
 </html>
